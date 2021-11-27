@@ -51,7 +51,31 @@
 
         // Add icons to each block
         $this.find('.vtimeline-point').each(function() {
-            $(this).prepend('<div class="vtimeline-icon"><i class="fa fa-map-marker"></i></div>');
+            $(this).prepend('<div class="vtimeline-icon"><i class="fas fa-briefcase"></i></div>');
+        });
+
+        // Add dates to the timeline if exists
+        $this.find('.vtimeline-content').each(function() {
+            var date = $(this).data('date');
+            if (date) { // Prepend if exists
+                $(this).parent().prepend('<span class="vtimeline-date">' + date + '</span>');
+            }
+        });
+    });
+
+    $('#projects-timeline').each(function() {
+
+        $this = $(this); // Store reference to this
+        $userContent = $this.children('div'); // user content
+
+        // Create each timeline block
+        $userContent.each(function() {
+            $(this).addClass('vtimeline-content').wrap('<div class="vtimeline-point"><div class="vtimeline-block"></div></div>');
+        });
+
+        // Add icons to each block
+        $this.find('.vtimeline-point').each(function() {
+            $(this).prepend('<div class="vtimeline-icon"><i class="fas fa-clipboard-check"></i></div>');
         });
 
         // Add dates to the timeline if exists
@@ -81,5 +105,17 @@
             $('#more-projects').fadeIn(300);
         });
     });
+
+    //Update all anchor tags with target=_blank whose href points to a different domain than the current domain
+    var currentDomain = location.host;
+    currentDomain = new RegExp(currentDomain, "i");
+
+    var anchorTags = document.getElementsByTagName('a');
+    for (var i = 0; i < anchorTags.length; i++) {
+        var href = anchorTags[i].host;
+        if (!currentDomain.test(href)) {
+            anchorTags[i].setAttribute('target', '_blank');
+        }
+    }
 
 })(jQuery);

@@ -8,14 +8,16 @@ body.active {
     z-index: -1
 }
 
-.no-js #experience-timeline>div {
+.no-js #experience-timeline>div,
+.no-js #projects-timeline>div {
     background: #fff;
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #dcd9d9
 }
 
-.no-js #experience-timeline>div h3 {
+.no-js #experience-timeline>div h3,
+.no-js #projects-timeline>div h3 {
     font-size: 1.5em;
     font-weight: 300;
     color: #374054;
@@ -23,21 +25,25 @@ body.active {
     margin: 0
 }
 
-.no-js #experience-timeline>div h4 {
+.no-js #experience-timeline>div h4,
+.no-js #projects-timeline>div h4 {
     font-size: 1.2em;
     font-weight: 300;
     color: #7e8890;
     margin: 0 0 15px 0
 }
 
-.no-js #experience-timeline>div p {
+.no-js #experience-timeline>div p,
+.no-js #projects-timeline>div p {
     color: #74808a;
     font-size: 0.9em;
     margin: 0
 }
 
 .no-js #experience-timeline:before,
-.no-js #experience-timeline:after {
+.no-js #experience-timeline:after,
+.no-js #projects-timeline:before,
+.no-js #projects-timeline:after {
     content: none
 }
 
@@ -350,20 +356,24 @@ footer {
 
 #about p {
     color: #74808a;
-    margin: 0
+    margin: 0;
+    font-size: 16px;
 }
 
-#experience {
+#experience,
+#projects {
     padding: 50px 15px;
     text-align: center;
     border-bottom: 1px solid #dcd9d9
 }
 
-#experience h2 {
+#experience h2,
+#projects h2 {
     color: #374054
 }
 
-#experience-timeline {
+#experience-timeline,
+#projects-timeline {
     margin: 30px auto 0 auto;
     position: relative;
     max-width: 1000px
@@ -444,7 +454,7 @@ footer {
 
 .vtimeline-icon i {
     display: block;
-    font-size: 2em;
+    font-size: 26px;
     margin-top: 10px
 }
 
@@ -738,7 +748,9 @@ footer {
 
 @media only screen and (max-width: 750px) {
     #experience-timeline:before,
-    #experience-timeline:after {
+    #experience-timeline:after,
+    #projects-timeline:before,
+    #projects-timeline:after {
         left: 23px
     }
     .vtimeline-date {
