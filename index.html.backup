@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Venkatesan Rethinam - Portfolio</title>
+    <link rel="shortcut icon" href="vengi83644-logo.png" type="image/x-icon">
+    <link rel="icon" href="vengi83644-logo.png" type="image/x-icon">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Venkatesan Rethinam - Portfolio">
+    <meta property="og:description" content="Portfolio of Venkatesan Rethinam">
+    <meta property="og:url" content="https://bicloud.io">
+    <meta property="og:site_name" content="bicloud.io | Venkatesan Rethinam - Portfolio">
+    <meta property="og:image" content="https://bicloud.io/vengi83644-logo.png">
+    <meta property="og:image:secure_url" content="https://bicloud.io/vengi83644-logo.png">
+    <meta property="og:image:width" content="141">
+    <meta property="og:image:height" content="181">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:description" content="Portfolio of Venkatesan Rethinam">
+    <meta name="twitter:title" content="bicloud.io | Venkatesan Rethinam - Portfolio">
+    <meta name="twitter:image" content="https://bicloud.io/vengi83644-logo.png">
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://clarity.ms" />
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+    <link rel="preconnect" href="https://www.google-analytics.com" />
+    <link rel="preconnect" href="https://fontawesome.com" />
+    <link rel="preconnect" href="https://unpkg.com" />
+
+    <script async src="https://kit.fontawesome.com/124d6323da.js" crossorigin="anonymous"></script>
+    <script async type="module" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"></script>
+    <script async nomodule="" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.js"></script>
+    <script async data-ad-client="ca-pub-2071601085813239"
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-D1ZJBPHCDS"></script>
+    <script async>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-D1ZJBPHCDS');
+    </script>
+
+    <!-- MS Clarity -->
+    <script type="text/javascript">
+        (function (c, l, a, r, i, t, y) {
+            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+            t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+            y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+        })(window, document, "clarity", "script", "3w2h2nkvn0");
+    </script>
+
+</head>
+
+<body>
+    <div id="mobile-menu-open" class="shadow-large">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    <!-- End #mobile-menu-toggle -->
+    <header>
+        <div id="mobile-menu-close">
+            <span>Close</span> <i class="fa fa-times" aria-hidden="true"></i>
+        </div>
+        <ul id="menu" class="shadow">
+            <li>
+                <a href="#about">About</a>
+            </li>
+            <li>
+                <a href="#experience">Experience</a>
+            </li>
+            <li>
+                <a href="#education">Education</a>
+            </li>
+            <li>
+                <a href="#projects">Projects</a>
+            </li>
+            <li>
+                <a href="#skills">Skills</a>
+            </li>
+        </ul>
+    </header>
+    <!-- End header -->
+
+    <div id="lead">
+        <div id="lead-content">
+            <h1>Venkatesan Rethinam</h1>
+            <h2>.Net Core, API, Azure, Serverless, Product Design & Delivery, Agile, C#, MVC, SQL DB, Cosmos DB, DevOps,
+                Azure Log Analytics and Workspaces (KQL)</h2>
+            <a target="_blank" href="https://www.linkedin.com/in/vengi83644" class="btn-rounded-white"
+                style="margin-right: 20px">LinkedIn</a>
+            <a target="_blank" href="https://blogs.bicloud.io" class="btn-rounded-white"
+                style="margin-right: 20px">Medium</a>
+            <a target="_blank" href="https://blogs.aspnet.in" class="btn-rounded-white"
+                style="margin-right: 20px">Blog</a>
+            <a target="_blank" href="https://dev.to/vengi83644" class="btn-rounded-white"
+                style="margin-right: 20px">Dev.to</a>
+        </div>
+        <!-- End #lead-content -->
+
+        <div id="lead-overlay"></div>
+
+        <div id="lead-down">
+            <span>
+                <i class="fa fa-chevron-down" aria-hidden="true"></i>
+            </span>
+        </div>
+        <!-- End #lead-down -->
+    </div>
+    <!-- End #lead -->
+
+    <div id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2">
+                    <h2 class="heading">About Me</h2>
+                </div>
+                <div class="col-md-10">
+                    <p>
+                        Web architect cum developer working in the .NET ecosystem with Azure and having completed many
+                        successful projects and products mainly Syncfusion Data Platform - Bold BI and Bold Reports.
+                        <br>
+                        <br> Skilled in Full stack web development involving ASP.Net Core MVC, Web API, SQL, jQuery,
+                        Scss, Webhooks, Azure, DevOps, TDD, and Agile development.
+                        <br>
+                        <br> Implemented a robust and flexible permission management system for an enterprise server
+                        application which is the base for Syncfusion's Data Platform -
+                        <a href="https://www.boldbi.com" target="_blank">boldbi.com</a> and Syncfusion Report Platform -
+                        <a href="https://www.boldreports.com" target="_blank">boldreports.com</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End #about -->
+
+    <div id="experience" class="background-alt">
+        <h2 class="heading">Professional Experience</h2>
+        <div id="experience-timeline">
+
+            <div data-date="Jul 2025 – Present">
+                <h3><a href="https://www.linkedin.com/company/rexus-solutions"> Rexus Solutions</a></h3>
+                <h4>Lead Software Engineer</h4>
+
+                <p>
+                    Leading software engineering initiatives and architecting scalable solutions using modern .NET technologies, Azure cloud services, and best practices in software development.
+                </p>
+            </div>
+
+            <div data-date="Aug 2021 – Feb 2024">
+                <h3><a href="https://www.linkedin.com/company/worldatworkindia"> WorldAtWork India</a></h3>
+                <h4>Web Architect</h4>
+
+                <p>
+                    Architecting the business website application based on the needs of LMS, Sales, Support, and
+                    Marketing Stack: ASP.Net Core, API, MS SQL, Azure App Services, App Insights, Azure DevOps, App
+                    Configuration and Key Vault
+                </p>
+            </div>
+
+            <div data-date="Dec 2020 – Aug 2021">
+                <h3><a href="https://www.linkedin.com/company/rencata/">Rencata</a></h3>
+                <h4>Technical Lead</h4>
+                <p>
+                    Client - CUDirect
+                </p>
+                <p>
+                    Handling a performance monitoring application that extracts Azure App Insights of various loan
+                    origination system applications to be monitored. Building the performance rollups to be viewed in an
+                    Angular Application. Stack: ASP.Net Core Web API, Angular
+                    App, Azure - Cosmos DB, App Insights, Blob Storage, Devops, App Configuration, Key Vault
+                </p>
+            </div>
+
+            <div data-date="Apr 2016 – Nov 2020">
+                <h3><a href="https://www.linkedin.com/company/syncfusion/">Syncfusion, Inc.</a></h3>
+                <h4>Product Development Manager</h4>
+                <p>
+                    Managing the Server and IDP(IAM) modules for both the Business Intelligence product <a
+                        href="https://www.boldbi.com" target="_blank">boldbi.com</a> and the reporting product <a
+                        href="https://www.boldreports.com" target="_blank">boldreports.com</a>.
+                    I am also managing the Widgets(Visualization) module in boldbi.com product. I have to plan the
+                    requirements based on the customer's needs and follow Agile to get the features delivered on time.
+                    Managing a total of 5 scrum teams with
+                    around 35 engineers including 5 scrum masters.
+                </p>
+            </div>
+
+            <div data-date="Apr 2014 – Apr 2016">
+                <h3><a href="https://www.linkedin.com/company/syncfusion/">Syncfusion, Inc.</a></h3>
+                <h4>Technical Lead</h4>
+                <p>
+                    Handled a consulting project - responsive web application for scheduling doctor appointments.
+                    Started many web applications from scratch and delivered with completion. Throughout these 2 years,
+                    I had to manage a scrum team of 5 engineers by helping them
+                    understand the tasks and get them delivered on time.
+                </p>
+            </div>
+
+            <div data-date="Apr 2012 – Apr 2014">
+                <h3><a href="https://www.linkedin.com/company/syncfusion/">Syncfusion, Inc.</a></h3>
+                <h4>Full Stack web Developer</h4>
+                <p>
+                    Started my career as a full-stack web developer and worked for the <a
+                        href="https://www.syncfusion.com" target="_blank">Syncfusion.com</a> website. Worked in the
+                    Downloads, Sales, Support, and the Feature Tour modules. MS SQL Server
+                    is the backend and ASP.Net MVC is the frontend including jQuery and SCSS.
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- End #experience -->
+
+    <div id="education">
+        <h2 class="heading">Education</h2>
+        <div class="education-block">
+            <h3>Saranathan College of Engineering</h3>
+            <h4>Anna University</h4>
+            <span class="education-date">2007 - 2011</span>
+            <h4>Bachelor of Engineering in Electrical and Electronics</h4>
+            <p>
+                Completed my bachelor's degree in Electrical and Electronics Engineering by performing a performance
+                analysis of the Indirect Vector Control of an Induction Motor using non-linear loads in MATLAB-SIMULINK.
+            </p>
+        </div>
+        <!-- End .education-block -->
+    </div>
+    <!-- End #education -->
+
+    <div id="projects" class="background-alt">
+        <h2 class="heading">Projects</h2>
+        <div id="projects-timeline">
+
+            <div data-date="Dec 2020 – Aug 2021">
+                <h3>User Experience Monitor (UEM)</h3>
+                <h4>Flow perf collector and monitor</h4>
+                <p>
+                    An integrated serverless architecture ecosystem that collects perf metrics of various flows from
+                    different apps running in the Azure App Services and rolls them up to a hierarchical format which
+                    will then be served through Web APIs to an Angular UI app.
+                </p>
+            </div>
+
+            <div data-date="Jan 2019 – Nov 2020">
+                <h3>Bold ID</h3>
+                <h4>IAM Application</h4>
+                <p>
+                    Bold ID is an IAM web app that manages the permissions, roles, security principal for the Bold
+                    Products - Bold BI, Bold Reports and other bold products.
+                </p>
+            </div>
+
+            <div data-date="April 2015 – Nov 2020">
+                <h3>Bold Reports</h3>
+                <h4>Reporting Software</h4>
+                <p>
+                    SSRS based RDL reporting solution that provides an end-to-end solution for handling reports with a
+                    multi-tenancy enterprise application. It provided both cloud and on-premise offerings with
+                    capabilities to embed dashboards from both solutions. (Previously
+                    Syncfusion Report Platform).
+                </p>
+            </div>
+
+            <div data-date="April 2015 – Nov 2020">
+                <h3>Bold BI</h3>
+                <h4>Business Intelligence Dashboard Application</h4>
+                <p>
+                    A multi-tenant enterprise application that gives end-to-end solution for creating, managing and
+                    sharing interactive dashboards. It provided both cloud and on-premise offerings with capabilities to
+                    embed dashboards from both solutions. (Previously Syncfusion
+                    Dashboard Platform)
+                </p>
+            </div>
+
+            <div data-date="Apr 2012 – Apr 2014">
+                <h3>Syncfusion Website</h3>
+                <p>
+                    A complete website application that has the feature tour, downloads, sales and support modules for a
+                    product company
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="skills">
+        <h2 class="heading">Skills</h2>
+        <ul>
+            <li>.Net Core</li>
+            <li>ASP.Net</li>
+            <li>MVC</li>
+            <li>Web API</li>
+            <li>Serverless</li>
+            <li>Azure Functions</li>
+            <li>Azure Cosmos DB</li>
+            <li>Azure Service Bus</li>
+            <li>Azure Log Analytics and Workspace</li>
+            <li>MS SQL</li>
+            <li>MySQL</li>
+            <li>PostgreSQL</li>
+            <li>KQL</li>
+            <li>JavaScript</li>
+            <li>jQuery</li>
+            <li>AngularJs</li>
+            <li>CSS</li>
+            <li>SCSS/SASS</li>
+            <li>LESS</li>
+            <li>Microsoft Azure</li>
+            <li>Web Development</li>
+            <li>Agile Methodologies</li>
+            <li>Business Intelligence</li>
+        </ul>
+    </div>
+    <!-- End #skills -->
+
+    <!-- <div id="contact">
+        <h2>Get in Touch</h2>
+        <div id="contact-form">
+            <form method="POST" action="https://formspree.io/email@email.com">
+                <input type="hidden" name="_subject" value="Contact request from personal website" />
+                <input type="email" name="_replyto" placeholder="Your email" required>
+                <textarea name="message" placeholder="Your message" required></textarea>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+        
+    </div> -->
+    <!-- End #contact -->
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-5 copyright">
+                    <p>
+                        Copyright &copy; 2026 vengi83644
+                    </p>
+                </div>
+                <div class="col-sm-2 top">
+                    <span id="to-top">
+                        <i class="fa fa-chevron-up" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="col-sm-5 social">
+                    <ul>
+                        <li>
+                            <a target="_blank" href="https://github.com/vengi83644">
+                                <ion-icon size="large" name="logo-github">
+
+                                </ion-icon>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a target="_blank" href="https://stackoverflow.com/users/2106928/venkatesan-rethinam">
+                                <ion-icon size="large" name="code-working">
+
+                                </ion-icon>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" href="https://www.linkedin.com/in/vengi83644">
+                                <ion-icon size="large" name="logo-linkedin">
+
+                                </ion-icon>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" href="https://twitter.com/vengi47488">
+                                <ion-icon size="large" name="logo-twitter">
+
+                                </ion-icon>
+                            </a>
+                        </li>
+                        <li>
+                            <a target="_blank" href="https://www.facebook.com/vengi83644">
+                                <ion-icon size="large" name="logo-facebook">
+
+                                </ion-icon>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- End footer -->
+
+    <script src="https://releases.jquery.com/git/jquery-3.x-git.min.js"></script>
+    <script async src="js/scripts.js"></script>
+</body>
+
+</html>
