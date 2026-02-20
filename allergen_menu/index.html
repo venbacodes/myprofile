@@ -1,0 +1,579 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Food List</title>
+    <link 
+   rel="stylesheet"
+   href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css"
+   integrity="sha512-..."
+   crossorigin="anonymous"
+   media="print"
+   onload="this.media='all'"
+>
+    <meta name="viewport" content="maximum-scale=1.0, user-scalable=0" />
+    <style>
+      body {
+        padding: 20px;
+        background-color: #e5e1d6;
+        color: #293e51;
+        font-family: Arial, sans-serif;
+      }
+
+      .guide-txt {
+       color:#293e51;
+       margin-top:35px;
+       padding: 20px;
+       background-color: white;
+       border-radius: 10px;       
+       font-size:18px;
+       font-family: Geograph, sans-serif;
+       border-style: solid;      
+       border-width: thin;
+       border-color: lightgray;
+       
+      }
+
+      .ingredient-list {
+        margin-top: 10px;
+        font-style: italic;
+      }
+
+      .container, .container-md, .container-sm {
+    max-width: 99%;}
+      
+      .icon-margin {
+        margin-left: 10px;
+        vertical-align: text-bottom;
+      }
+
+      #searchContainer {
+        display: none;
+      }
+
+      .category-list {
+        border-style: solid;
+        border-width: thin;
+        border-color: #cdc19b;
+        background-color: #f5f1e9;   
+     
+      }
+
+      .list-group{
+        margin-top:10px;
+      }
+
+      .list-group-item-cat {
+        position: relative;
+    display: block;
+    padding: 0.5rem 1rem;
+    color: #212529;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,.125);
+      }
+
+      .list-group-item {
+    cursor: pointer;
+    display: inline-block;
+    width: calc(50% - 10px); /* Takes 50% width minus some margin */
+    margin: 5px;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+
+
+.food-item {
+    padding: 10px;
+    background-color: #f5f1e9;
+    border: 1px solid #cdc19b;
+    border-radius: 5px;
+    text-align: center;
+    position: relative; 
+}
+
+.food-item img.icon {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    height: 25px;
+    width: 25px;
+}
+.list-group-item-cat.active {
+        background-color: #84776e;
+        color: white;
+      }
+
+      .list-group-item.active {
+        background-color: #84776e;
+        color: white;
+      }
+
+      .btn-primary {
+        background-color: #b2282e;
+        border-color: #b2282e;
+        border-radius: 5px!important;
+        border-color: white;
+      }
+
+          
+      .btn-secondary {
+        background-color: #293e51;
+        border-color: #293e51;
+        border-radius: 5px!important;
+        border-color: white;        
+      }
+
+      .list-group-item-cat.search-option {
+        background-color: #293e51;
+        color: white;
+        
+      }
+
+      .list-group-item-cat.search-option:hover {
+        background-color: #8a1f24;
+      }
+
+      .list-group-item-cat.search-option:active {
+        background-color: #b2282e;
+      }
+
+      .list-group-item:hover {
+        background-color: #ddd;
+      }
+
+      .list-group-item.text-danger {
+        color: #b2282e;
+      }
+
+      .red {
+        color: #b2282e;      
+      }
+
+      .col-md-3 {
+         flex: 0 0 auto;
+        width: 20%;
+        }
+        .col-md-9 {
+    flex: 0 0 auto;
+    width: 80%;
+}
+
+.btn-reset {
+    padding:10px 15px;
+    background-color: gray;
+    color:white; 
+}
+
+
+
+.disable-doubletap-to-zoom {
+    touch-action: none;
+}   
+
+
+
+
+
+
+  </style>
+  </head>
+  <body>
+    <div class="container" style="margin-left: 0!important">
+      <div class="row">
+        <div style="position: fixed;" class="col-md-3 category-list">
+          <ul class="list-group list-group-flush overflow-auto vh-100" id="categoryList"></ul>
+          <li class="list-group-item-cat search-option" style="display: none;"></li>
+        </div>
+        <div class="col-md-9" style="border-style: solid; border-color: #cdc19b; border-width: thin; padding: 10px 50px 50px 10px; background-color: #f5f1e9;margin-left: 21%;">
+            <div class="sticky-top" style="background-color: #f5f1e9;padding: 20px 0px"><div  style="display:block !important" class="btn-group btn-row"  id="ingredientFilters"><button id="clearFilter" style="" class="btn btn-secondary btn-reset"><img src="images/clear-filter-small.png"></button></div></div>
+          
+          
+          <div class="guide-txt" id="guide">
+            <p style="margin-bottom:15px">&#x2022; &nbsp; <u>Select a category</u> or use search to find an item</p>
+            <p style="margin-bottom:15px">&#x2022; &nbsp; <u>Select allergen/s</u> above to see recipes containing selected allergen/s. </p>
+            <p>&#x2022; &nbsp; Items with selected allergens will be marked in <span class="red">red.</span></p></div>
+          <div id="searchContainer" style="display: none;margin:20px 0px">
+            <input type="text" id="searchInput" style="padding: 10px;border-radius: 5px;border-width: 1px;" placeholder="Search Item Name">
+            <button id="searchButton" style="margin-left:10px;" class="btn btn-primary">OK</button>
+          </div>        
+          <div id="foodList" style="border-radius: 10px;
+          margin-top: 20px;"></div>
+          <div id="searchResults" style="display: none;"></div>
+        </div>
+      </div>
+    </div>
+
+    
+    <script>
+
+
+const categories = [{"id":1,"name":"Shareable Appetizers","items":[{"id":1,"name":"Ahi Poke","ingredients":["Egg","Fish","Soy","Sulfites","Wheat","Sesame Seeds"]},{"id":2,"name":"Ahi Poke Tacos","ingredients":["Egg","Fish","Soy","Sulfites","Wheat","Sesame Seeds"]},{"id":3,"name":"Avocado Egg Rolls","ingredients":["Egg","Milk","Soy","Sulfites","Wheat"]},{"id":4,"name":"Big Twist Pretzel Appetizer with Beer Cheese","ingredients":["Egg","Milk","Other Gluten","Soy","Sulfites","Wheat"]},{"id":5,"name":"Chicken Pot Stickers","ingredients":["Egg","Soy","Wheat","Sesame Seeds"]},{"id":6,"name":"Chips with Guacamole and Salsa","ingredients":["Wheat"]},{"id":7,"name":"Crispy Calamari","ingredients":["Egg","Milk","Other Gluten","Shellfish","Wheat","Sesame Seeds"]},{"id":8,"name":"Deep Dish Nachos","ingredients":["Milk","Sulfites","Wheat"]},{"id":9,"name":"with Chili","ingredients":["Milk","Other Gluten","Soy","Sulfites","Wheat"]},{"id":10,"name":"with Grilled Desert Gold Chicken","ingredients":["Milk","Soy","Sulfites","Wheat","Sesame Seeds"]},{"id":11,"name":"with Roasted Tri Tip Beef","ingredients":["Milk","Other Gluten","Soy","Sulfites","Wheat"]},{"id":12,"name":"Fried Chicken Pot Stickers","ingredients":["Egg","Soy","Wheat","Sesame Seeds"]},{"id":13,"name":"Fried Cous Cous Mac and Cheese Balls","ingredients":["Egg","Milk","Other Gluten","Sulfites","Wheat"]},{"id":14,"name":"Garlic Bread Knots Appetizer","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":15,"name":"Garlic Breadsticks Appetizer","ingredients":["Milk","Other Gluten","Wheat"]},{"id":16,"name":"Garlic Shrimp with Parm Toast","ingredients":["Milk","Other Gluten","Shellfish","Soy","Wheat"]},{"id":17,"name":"Mozzarella Sticks","ingredients":["Egg","Milk","Wheat"]},{"id":18,"name":"Sliders","ingredients":["Milk","Other Gluten","Wheat"]},{"id":19,"name":"Spinach and Artichoke Dip","ingredients":["Milk","Wheat"]},{"id":20,"name":"Spinach and Artichoke Dip with Veggies","ingredients":["Milk","Wheat"]},{"id":21,"name":"Brewhouse Sampler","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]}]},{"id":2,"name":"Wings and Sauces","items":[{"id":1,"name":"BJ's Original Wings","ingredients":["Egg","Milk","Wheat"]},{"id":2,"name":"Boneless Chicken Wings, 1 Lb","ingredients":["Egg","Milk","Wheat"]},{"id":3,"name":"with Wing Sauce Choice BBQ Bacon Jam","ingredients":["Egg","Milk","Soy","Wheat","Sesame Seeds"]},{"id":4,"name":"with Wing Sauce Choice Buffalo Beer Sauce","ingredients":["Egg","Milk","Other Gluten","Wheat"]},{"id":5,"name":"with Wing Sauce Choice Carolina Tangy Gold","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":6,"name":"with Wing Sauce Choice Nashville Hot Sauce","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":7,"name":"with Wing Sauce Choice Peppered BBQ","ingredients":["Egg","Milk","Wheat"]},{"id":8,"name":"with Wing Sauce Choice Root Beer BBQ","ingredients":["Egg","Milk","Sulfites","Wheat"]},{"id":9,"name":"with Wing Seasoning Choice Lemon Pepper Sesame Dry Rub","ingredients":["Egg","Milk","Wheat","Sesame Seeds"]},{"id":10,"name":"Chicken Tenders","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":11,"name":"Slow Roasted Chicken Wings","ingredients":["Egg","Milk","Wheat"]},{"id":12,"name":"with Wing Sauce Choice BBQ Bacon Jam","ingredients":["Egg","Milk","Soy","Wheat","Sesame Seeds"]},{"id":13,"name":"with Wing Sauce Choice Buffalo Beer Sauce","ingredients":["Egg","Milk","Other Gluten","Wheat"]},{"id":14,"name":"with Wing Sauce Choice Carolina Tangy Gold","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":15,"name":"with Wing Sauce Choice Nashville Hot Sauce","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":16,"name":"with Wing Sauce Choice Peppered BBQ","ingredients":["Egg","Milk","Wheat"]},{"id":17,"name":"with Wing Sauce Choice Root Beer BBQ","ingredients":["Egg","Milk","Sulfites","Wheat"]},{"id":18,"name":"with Wing Seasoning Choice Lemon Pepper Sesame Dry Rub","ingredients":["Egg","Milk","Wheat","Sesame Seeds"]},{"id":19,"name":"Slow Roasted Original Wings","ingredients":["Egg","Milk","Other Gluten","Wheat"]},{"id":20,"name":"Wing Sauces and Rubs, 1 fl oz and 1 tsp","ingredients":[]},{"id":21,"name":"with Wing Sauce Choice BBQ Bacon Jam","ingredients":["Soy","Wheat","Sesame Seeds"]},{"id":22,"name":"with Wing Sauce Choice Buffalo Beer Sauce","ingredients":["Other Gluten"]},{"id":23,"name":"with Wing Sauce Choice Carolina Tangy Gold","ingredients":["Soy","Wheat"]},{"id":24,"name":"with Wing Sauce Choice Nashville Hot Sauce","ingredients":["Milk","Soy","Wheat"]},{"id":25,"name":"with Wing Sauce Choice Peppered BBQ","ingredients":[]},{"id":26,"name":"with Wing Sauce Choice Root Beer BBQ","ingredients":["Sulfites"]},{"id":27,"name":"with Wing Seasoning Choice Lemon Pepper Sesame Dry Rub","ingredients":["Sesame Seeds"]}]},{"id":3,"name":"BJs Flatbread Appetizer Pizzas","items":[{"id":1,"name":"California Club Flatbread Pizza","ingredients":["Egg","Milk","Soy","Wheat","Sesame Seeds"]},{"id":2,"name":"Pepperoni Extreme Flatbread Pizza","ingredients":["Milk","Wheat"]}]},{"id":4,"name":"BJs Snacks and Small Bites","items":[{"id":1,"name":"Honey Sriracha Brussels Sprouts","ingredients":["Milk","Sulfites","Wheat","Sesame Seeds"]},{"id":2,"name":"Queso Dip","ingredients":["Milk","Sulfites","Wheat"]},{"id":3,"name":"Queso Dip with Pirahna Pale Ale Chili","ingredients":["Milk","Other Gluten","Soy","Sulfites","Wheat"]},{"id":4,"name":"Sweet Potato Fries","ingredients":["Wheat"]}]},{"id":5,"name":"Deep Dish Pizzas","items":[{"id":1,"name":"BJ's Classic Combo Deep Dish Pizza, Large","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":2,"name":"BJ's Classic Combo Deep Dish Pizza, Mini","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":3,"name":"BJ's Classic Combo Deep Dish Pizza, Shareable","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":4,"name":"BJ's Favorite Deep Dish Pizza, Large","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":5,"name":"BJ's Favorite Deep Dish Pizza, Mini","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":6,"name":"BJ's Favorite Deep Dish Pizza, Shareable","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":7,"name":"Barbeque Chicken Deep Dish Pizza, Large","ingredients":["Milk","Other Gluten","Soy","Wheat","Sesame Seeds"]},{"id":8,"name":"Barbeque Chicken Deep Dish Pizza, Mini","ingredients":["Milk","Other Gluten","Soy","Wheat","Sesame Seeds"]},{"id":9,"name":"Barbeque Chicken Deep Dish Pizza, Shareable","ingredients":["Milk","Other Gluten","Soy","Wheat","Sesame Seeds"]},{"id":10,"name":"Buffalo Chicken Deep Dish Pizza, Large","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat","Sesame Seeds"]},{"id":11,"name":"Buffalo Chicken Deep Dish Pizza, Mini","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat","Sesame Seeds"]},{"id":12,"name":"Buffalo Chicken Deep Dish Pizza, Shareable","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat","Sesame Seeds"]},{"id":13,"name":"Cheese and Tomato Deep Dish Pizza, Large","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":14,"name":"Cheese and Tomato Deep Dish Pizza, Mini","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":15,"name":"Cheese and Tomato Deep Dish Pizza, Shareable","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":16,"name":"Chicken Bacon Ranch Deep Dish Pizza, Large","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat","Sesame Seeds"]},{"id":17,"name":"Chicken Bacon Ranch Deep Dish Pizza, Mini","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat","Sesame Seeds"]},{"id":18,"name":"Chicken Bacon Ranch Deep Dish Pizza, Shareable","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat","Sesame Seeds"]},{"id":19,"name":"Gourmet Five Meat Deep Dish Pizza, Large","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":20,"name":"Gourmet Five Meat Deep Dish Pizza, Mini","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":21,"name":"Gourmet Five Meat Deep Dish Pizza, Shareable","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":22,"name":"Great White Deep Dish Pizza, Large","ingredients":["Milk","Other Gluten","Soy","Wheat","Sesame Seeds"]},{"id":23,"name":"Great White Deep Dish Pizza, Mini","ingredients":["Milk","Other Gluten","Soy","Wheat","Sesame Seeds"]},{"id":24,"name":"Great White Deep Dish Pizza, Shareable","ingredients":["Milk","Other Gluten","Soy","Wheat","Sesame Seeds"]},{"id":25,"name":"Pepperoni Extreme Deep Dish Pizza, Large","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":26,"name":"Pepperoni Extreme Deep Dish Pizza, Mini","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":27,"name":"Pepperoni Extreme Deep Dish Pizza, Shareable","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":28,"name":"Sweet Pig Deep Dish Pizza, Large","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":29,"name":"Sweet Pig Deep Dish Pizza, Mini","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":30,"name":"Sweet Pig Deep Dish Pizza, Shareable","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":31,"name":"Vegetarian Deep Dish Pizza, Large","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":32,"name":"Vegetarian Deep Dish Pizza, Mini","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":33,"name":"Vegetarian Deep Dish Pizza, Shareable","ingredients":["Milk","Other Gluten","Soy","Wheat"]}]},{"id":6,"name":"Build Your Own Deep Dish Pizzas","items":[{"id":1,"name":"Build Your Own Deep Dish Pizza, Large","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":2,"name":"with Anchovies","ingredients":["Fish","Milk","Other Gluten","Soy","Wheat"]},{"id":3,"name":"with Bacon","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":4,"name":"with Black Olives","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":5,"name":"with Blackened Chicken","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":6,"name":"with Fresh Basil","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":7,"name":"with Fresh Cilantro","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":8,"name":"with Garlic","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":9,"name":"with Green Peppers","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":10,"name":"with Grilled Chicken","ingredients":["Milk","Other Gluten","Soy","Wheat","Sesame Seeds"]},{"id":11,"name":"with Ham","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":12,"name":"with Jalapenos","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":13,"name":"with Meatballs","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":14,"name":"with Mushrooms","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":15,"name":"with Onions","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":16,"name":"with Pepperoni","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":17,"name":"with Pineapple","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":18,"name":"with Roasted Red Peppers","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":19,"name":"with Sausage","ingredients":["Milk","Other Gluten","Soy","Wheat"]}]},{"id":7,"name":"Tavern Crust Pizzas","items":[{"id":1,"name":"BJ's Brewhouse Classic","ingredients":["Milk","Wheat"]},{"id":2,"name":"The Spicy Pig","ingredients":["Milk","Wheat"]}]},{"id":8,"name":"Build Your Own Tavern Crust Pizzas","items":[{"id":1,"name":"Build Your Own Pizza, Tavern Crust","ingredients":["Milk","Wheat"]},{"id":2,"name":"with Anchovies","ingredients":["Fish","Milk","Wheat"]},{"id":3,"name":"with Bacon","ingredients":["Milk","Wheat"]},{"id":4,"name":"with Black Olives","ingredients":["Milk","Wheat"]},{"id":5,"name":"with Blackened Chicken","ingredients":["Milk","Wheat"]},{"id":6,"name":"with Fresh Basil","ingredients":["Milk","Wheat"]},{"id":7,"name":"with Fresh Cilantro","ingredients":["Milk","Wheat"]},{"id":8,"name":"with Garlic","ingredients":["Milk","Wheat"]},{"id":9,"name":"with Green Peppers","ingredients":["Milk","Wheat"]},{"id":10,"name":"with Grilled Chicken","ingredients":["Milk","Soy","Wheat","Sesame Seeds"]},{"id":11,"name":"with Ham","ingredients":["Milk","Wheat"]},{"id":12,"name":"with Jalapenos","ingredients":["Milk","Wheat"]},{"id":13,"name":"with Meatballs","ingredients":["Egg","Milk","Wheat"]},{"id":14,"name":"with Mushrooms","ingredients":["Milk","Wheat"]},{"id":15,"name":"with Onions","ingredients":["Milk","Wheat"]},{"id":16,"name":"with Pepperoni","ingredients":["Milk","Wheat"]},{"id":17,"name":"with Pineapple","ingredients":["Milk","Wheat"]},{"id":18,"name":"with Roasted Red Peppers","ingredients":["Milk","Wheat"]},{"id":19,"name":"with Sausage","ingredients":["Milk","Wheat"]}]},{"id":9,"name":"Gluten Free Thin Crust Cheese Pizzas","items":[{"id":1,"name":"Gluten Free Thin Crust Cheese Pizza","ingredients":["Milk"]},{"id":2,"name":"with Anchovies","ingredients":["Fish","Milk"]},{"id":3,"name":"with Bacon","ingredients":["Milk"]},{"id":4,"name":"with Black Olives","ingredients":["Milk"]},{"id":5,"name":"with Blackened Chicken","ingredients":["Milk"]},{"id":6,"name":"with Fresh Basil","ingredients":["Milk"]},{"id":7,"name":"with Fresh Cilantro","ingredients":["Milk"]},{"id":8,"name":"with Garlic","ingredients":["Milk"]},{"id":9,"name":"with Green Peppers","ingredients":["Milk"]},{"id":10,"name":"with Grilled Chicken","ingredients":["Milk","Soy","Sesame Seeds"]},{"id":11,"name":"with Ham","ingredients":["Milk"]},{"id":12,"name":"with Jalapenos","ingredients":["Milk"]},{"id":13,"name":"with Meatballs","ingredients":["Egg","Milk","Wheat"]},{"id":14,"name":"with Mushrooms","ingredients":["Milk"]},{"id":15,"name":"with Onions","ingredients":["Milk"]},{"id":16,"name":"with Pepperoni","ingredients":["Milk"]},{"id":17,"name":"with Pineapple","ingredients":["Milk"]},{"id":18,"name":"with Roasted Red Peppers","ingredients":["Milk"]},{"id":19,"name":"with Sausage","ingredients":["Milk"]}]},{"id":10,"name":"Gluten Free Pizzas","items":[{"id":1,"name":"BJ's Classic Combo Pizza, Gluten Free Crust","ingredients":["Milk"]},{"id":2,"name":"Barbeque Chicken Pizza, Gluten Free Crust","ingredients":["Milk","Soy","Sesame Seeds"]},{"id":3,"name":"Buffalo Chicken Pizza, Gluten Free Crust","ingredients":["Egg","Milk","Other Gluten","Soy","Sesame Seeds"]},{"id":4,"name":"Chicken Bacon Ranch Pizza, Gluten Free Crust","ingredients":["Egg","Milk","Soy","Sesame Seeds"]},{"id":5,"name":"Great White Pizza, Gluten Free Crust","ingredients":["Milk","Other Gluten","Soy","Wheat","Sesame Seeds"]},{"id":6,"name":"Pepperoni Extreme Pizza, Gluten Free Crust","ingredients":["Milk"]},{"id":7,"name":"Sweet Pig Pizza, Gluten Free Crust","ingredients":["Milk"]},{"id":8,"name":"Vegetarian Pizza, Gluten Free Crust","ingredients":["Milk"]}]},{"id":11,"name":"BJs Enlightened Entrees","items":[{"id":1,"name":"Asian Chopped Salad","ingredients":["Egg","Soy","Wheat","Sesame Seeds"]},{"id":2,"name":"with Blackened Chicken","ingredients":["Egg","Soy","Wheat","Sesame Seeds"]},{"id":3,"name":"with Blackened Salmon","ingredients":["Egg","Fish","Soy","Wheat","Sesame Seeds"]},{"id":4,"name":"with Blackened Shrimp","ingredients":["Egg","Shellfish","Soy","Wheat","Sesame Seeds"]},{"id":5,"name":"with Flame Broiled Salmon","ingredients":["Egg","Fish","Soy","Wheat","Sesame Seeds"]},{"id":6,"name":"with Grilled Chicken","ingredients":["Egg","Soy","Wheat","Sesame Seeds"]},{"id":7,"name":"BJ's Brewhouse Bowl with Quinoa and Brown Rice Blend","ingredients":["Milk","Soy","Sulfites"]},{"id":8,"name":"with Blackened Chicken","ingredients":["Milk","Soy","Sulfites"]},{"id":9,"name":"with Blackened Salmon","ingredients":["Fish","Milk","Soy","Sulfites"]},{"id":10,"name":"with Blackened Shrimp","ingredients":["Milk","Shellfish","Soy","Sulfites"]},{"id":11,"name":"with Flame Broiled Salmon","ingredients":["Fish","Milk","Soy","Sulfites"]},{"id":12,"name":"with Grilled Chicken","ingredients":["Milk","Soy","Sulfites","Sesame Seeds"]},{"id":13,"name":"with Grilled Shrimp","ingredients":["Milk","Shellfish","Soy","Sulfites","Sesame Seeds"]},{"id":14,"name":"with Roasted Tri Tip Beef","ingredients":["Milk","Other Gluten","Soy","Sulfites","Wheat"]},{"id":15,"name":"BJ's Brewhouse Bowl with Quinoa and White Rice Blend","ingredients":["Milk","Soy","Sulfites","Sesame Seeds"]},{"id":16,"name":"with Blackened Chicken","ingredients":["Milk","Soy","Sulfites","Sesame Seeds"]},{"id":17,"name":"with Blackened Salmon","ingredients":["Fish","Milk","Soy","Sulfites","Sesame Seeds"]},{"id":18,"name":"with Blackened Shrimp","ingredients":["Milk","Shellfish","Soy","Sulfites","Sesame Seeds"]},{"id":19,"name":"with Flame Broiled Salmon","ingredients":["Fish","Milk","Soy","Sulfites","Sesame Seeds"]},{"id":20,"name":"with Grilled Chicken","ingredients":["Milk","Soy","Sulfites","Sesame Seeds"]},{"id":21,"name":"with Grilled Shrimp","ingredients":["Milk","Shellfish","Soy","Sulfites","Sesame Seeds"]},{"id":22,"name":"with Roasted Tri Tip Beef","ingredients":["Milk","Other Gluten","Soy","Sulfites","Wheat","Sesame Seeds"]},{"id":23,"name":"Mediterranean Chicken Pita Tacos","ingredients":["Milk","Soy","Sulfites","Wheat","Sesame Seeds"]},{"id":24,"name":"Seared Ahi Salad","ingredients":["Egg","Fish","Soy","Sulfites","Wheat","Sesame Seeds"]}]},{"id":12,"name":"Garden Fresh Specialty Salads","items":[{"id":1,"name":"Caesar Salad","ingredients":["Egg","Fish","Milk","Other Gluten","Soy","Wheat"]},{"id":2,"name":"with Blackened Chicken","ingredients":["Egg","Fish","Milk","Other Gluten","Soy","Wheat"]},{"id":3,"name":"with Blackened Salmon","ingredients":["Egg","Fish","Milk","Other Gluten","Soy","Wheat"]},{"id":4,"name":"with Blackened Shrimp","ingredients":["Egg","Fish","Milk","Other Gluten","Shellfish","Soy","Wheat"]},{"id":5,"name":"with Flame Broiled Salmon","ingredients":["Egg","Fish","Milk","Other Gluten","Soy","Wheat"]},{"id":6,"name":"with Grilled Chicken","ingredients":["Egg","Fish","Milk","Other Gluten","Soy","Wheat","Sesame Seeds"]},{"id":7,"name":"Caesar Starter Salad","ingredients":["Egg","Fish","Milk","Other Gluten","Soy","Wheat"]},{"id":8,"name":"Fresh Mozzarella and Tomato Salad","ingredients":["Milk","Sulfites"]},{"id":9,"name":"Honey-Crisp Chicken Salad","ingredients":["Egg","Tree Nuts"]},{"id":10,"name":"with Blackened Chicken","ingredients":["Egg","Tree Nuts"]},{"id":11,"name":"with Blackened Salmon","ingredients":["Egg","Fish","Soy","Tree Nuts"]},{"id":12,"name":"with Blackened Shrimp","ingredients":["Egg","Shellfish","Soy","Tree Nuts"]},{"id":13,"name":"with Flame Broiled Salmon","ingredients":["Egg","Fish","Soy","Tree Nuts"]},{"id":14,"name":"with Fried Chicken Tenders","ingredients":["Egg","Soy","Tree Nuts","Wheat"]},{"id":15,"name":"with Grilled Chicken","ingredients":["Egg","Soy","Tree Nuts","Sesame Seeds"]},{"id":16,"name":"House Starter Salad","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":17,"name":"with Balsamic Vinaigrette","ingredients":["Milk","Other Gluten","Soy","Sulfites","Wheat"]},{"id":18,"name":"with Bleu Cheese Dressing","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":19,"name":"with Creamy Garlic Dressing","ingredients":["Egg","Fish","Milk","Other Gluten","Soy","Wheat"]},{"id":20,"name":"with Honey Mustard Dressing","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":21,"name":"with Italian Dressing","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":22,"name":"with Oil and Vinegar","ingredients":["Milk","Other Gluten","Soy","Sulfites","Wheat"]},{"id":23,"name":"with Ranch Dressing","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":24,"name":"with Thousand Island Dressing","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":25,"name":"Santa Fe Salad","ingredients":["Egg","Milk","Wheat"]},{"id":26,"name":"with Blackened Chicken","ingredients":["Egg","Milk","Wheat"]},{"id":27,"name":"with Blackened Salmon","ingredients":["Egg","Fish","Milk","Soy","Wheat"]},{"id":28,"name":"with Blackened Shrimp","ingredients":["Egg","Milk","Shellfish","Soy","Wheat"]},{"id":29,"name":"with Flame Broiled Salmon","ingredients":["Egg","Fish","Milk","Soy","Wheat"]},{"id":30,"name":"with Grilled Chicken","ingredients":["Egg","Milk","Soy","Wheat","Sesame Seeds"]},{"id":31,"name":"Strawberry Fields Salad with Chicken","ingredients":["Milk","Soy","Sulfites","Tree Nuts","Sesame Seeds"]},{"id":32,"name":"Tri-Tip Wedge","ingredients":["Egg","Milk","Other Gluten","Soy","Sulfites","Wheat"]},{"id":33,"name":"Wedge Starter Salad","ingredients":["Egg","Milk","Soy"]}]},{"id":13,"name":"Signature Dressings","items":[{"id":1,"name":"BBQ Ranch Dressing","ingredients":["Egg","Milk"]},{"id":2,"name":"Balsamic Vinaigrette","ingredients":["Sulfites"]},{"id":3,"name":"Bleu Cheese Dressing","ingredients":["Egg","Milk","Soy"]},{"id":4,"name":"Caesar Dressing","ingredients":["Egg","Fish","Milk"]},{"id":5,"name":"Honey Mustard Dressing","ingredients":["Egg"]},{"id":6,"name":"Italian Dressing","ingredients":[]},{"id":7,"name":"Oil & Vinegar","ingredients":["Sulfites"]},{"id":8,"name":"Ranch Dressing","ingredients":["Egg","Milk"]},{"id":9,"name":"Rice Wine Vinaigrette","ingredients":["Soy","Sulfites","Wheat"]},{"id":10,"name":"Santa Fe Dressing","ingredients":["Egg","Milk"]},{"id":11,"name":"Thousand Island Dressing","ingredients":["Egg"]}]},{"id":14,"name":"Handcrafted Burgers","items":[{"id":1,"name":"American Cheese","ingredients":["Milk","Soy"]},{"id":2,"name":"BJ's Bacon Cheeseburger","ingredients":["Egg","Fish","Milk","Other Gluten","Soy","Wheat"]},{"id":3,"name":"with Cheese Choice Pepper Jack Cheese","ingredients":["Egg","Fish","Milk","Other Gluten","Soy","Wheat"]},{"id":4,"name":"with Cheese Choice Provolone Cheese","ingredients":["Egg","Fish","Milk","Other Gluten","Soy","Wheat"]},{"id":5,"name":"with Cheese Choice Swiss Cheese","ingredients":["Egg","Fish","Milk","Other Gluten","Soy","Wheat"]},{"id":6,"name":"BJ's Smokehouse Burger","ingredients":["Egg","Milk","Other Gluten","Wheat"]},{"id":7,"name":"Bacon Guacamole Deluxe Burger","ingredients":["Egg","Milk","Other Gluten","Wheat"]},{"id":8,"name":"Bacon Jam Add On","ingredients":["Soy","Wheat","Sesame Seeds"]},{"id":9,"name":"Burger Patty","ingredients":[]},{"id":10,"name":"Cheddar Cheese","ingredients":["Milk"]},{"id":11,"name":"Chili, Add On","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":12,"name":"Classic Cheeseburger","ingredients":["Egg","Fish","Milk","Other Gluten","Soy","Wheat"]},{"id":13,"name":"Crispy Jalapeno Burger","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":14,"name":"with Bacon","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":15,"name":"with Cheese Choice Cheddar Cheese","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":16,"name":"with Cheese Choice Provolone Cheese","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":17,"name":"with Cheese Choice Swiss Cheese","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":18,"name":"Gluten Free Bun","ingredients":["Egg"]},{"id":19,"name":"Hickory Brisket and Bacon Burger","ingredients":["Egg","Milk","Other Gluten","Wheat"]},{"id":20,"name":"Jallelujah Guacamole, Add On","ingredients":[]}]},{"id":15,"name":"Sandwiches","items":[{"id":1,"name":"Brewhouse Philly Sandwich","ingredients":["Egg","Fish","Milk","Other Gluten","Soy","Sulfites","Wheat"]},{"id":2,"name":"California Chicken Club Sandwich","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat","Sesame Seeds"]},{"id":3,"name":"Classic Crispy Chicken Sandwich","ingredients":["Egg","Milk","Other Gluten","Sulfites","Wheat","Sesame Seeds"]},{"id":4,"name":"Classic Prime Rib Dip","ingredients":["Egg","Fish","Milk","Other Gluten","Soy","Sulfites","Wheat"]},{"id":5,"name":"Kickin' Chicken Sandwich","ingredients":["Egg","Milk","Other Gluten","Sulfites","Wheat","Sesame Seeds"]},{"id":6,"name":"Original Roast Beef Dip Sandwich","ingredients":["Egg","Fish","Milk","Other Gluten","Soy","Sulfites","Wheat"]},{"id":7,"name":"Peppered BBQ Tri Tip Sliders","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]}]},{"id":16,"name":"Culinary Creations","items":[{"id":1,"name":"Butter and Brew Shrimp","ingredients":["Milk","Other Gluten","Shellfish","Soy","Wheat"]}]},{"id":17,"name":"Ribs and USDA Steaks","items":[{"id":1,"name":"BBQ Tri Tip Entree","ingredients":["Other Gluten","Soy","Wheat"]},{"id":2,"name":"BJ's Classic Rib-Eye","ingredients":[]},{"id":3,"name":"Baby Back Pork Ribs, Full Rack","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":4,"name":"Baby Back Pork Ribs, Half Rack","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":5,"name":"Filet Mignon","ingredients":["Soy"]},{"id":6,"name":"Prime Rib Dinner","ingredients":["Egg","Fish","Milk","Soy","Sulfites"]},{"id":7,"name":"Surf and Turf Stack","ingredients":["Milk","Other Gluten","Shellfish","Soy"]}]},{"id":18,"name":"Steak Toppers","items":[{"id":1,"name":"Bacon Jam Add On","ingredients":["Soy","Wheat","Sesame Seeds"]},{"id":2,"name":"Bleu Cheese Crumbles, Add On","ingredients":["Milk"]},{"id":3,"name":"Garlic Butter Add On","ingredients":["Milk","Soy"]},{"id":4,"name":"Sauteed Mushrooms and Onions Add On","ingredients":["Fish","Milk","Soy","Sulfites"]}]},{"id":19,"name":"Housemade Sides","items":[{"id":1,"name":"Asparagus","ingredients":["Soy"]},{"id":2,"name":"Avocado","ingredients":[]},{"id":3,"name":"Blackened Chicken, Add On","ingredients":[]},{"id":4,"name":"Blackened Salmon, Add On","ingredients":["Fish","Soy"]},{"id":5,"name":"Blackened Shrimp, Add On","ingredients":["Shellfish","Soy"]},{"id":6,"name":"Broccoli","ingredients":[]},{"id":7,"name":"Flame Broiled Salmon, Add On","ingredients":["Fish","Soy"]},{"id":8,"name":"French Fries","ingredients":["Wheat"]},{"id":9,"name":"Garlic Roasted Vegetables","ingredients":["Soy","Sesame Seeds"]},{"id":10,"name":"Grilled Chicken, Add On","ingredients":["Soy","Sesame Seeds"]},{"id":11,"name":"Honey Sriracha Brussels Sprouts, Side","ingredients":["Milk","Sulfites","Wheat","Sesame Seeds"]},{"id":12,"name":"Loaded Baked Potato","ingredients":["Milk","Soy"]},{"id":13,"name":"Loaded Mashed Potatoes","ingredients":["Milk","Soy"]},{"id":14,"name":"Regular Cut French Fries","ingredients":["Wheat"]},{"id":15,"name":"Rice Pilaf","ingredients":["Soy","Wheat"]},{"id":16,"name":"The Classic Baked Potato","ingredients":["Milk","Soy"]},{"id":17,"name":"White Cheddar Mashed Potatoes","ingredients":["Milk","Soy"]}]},{"id":20,"name":"Specialty Entrees","items":[{"id":1,"name":"Atlantic Salmon","ingredients":["Fish","Milk","Soy","Sulfites","Wheat"]},{"id":2,"name":"BJ's Brewhouse Blonde Fish 'n' Chips","ingredients":["Egg","Fish","Milk","Other Gluten","Soy","Sulfites","Wheat"]},{"id":3,"name":"Blackened Salmon","ingredients":["Fish","Milk","Soy","Sulfites","Wheat"]},{"id":4,"name":"with Broccoli","ingredients":["Fish","Milk","Soy","Sulfites","Wheat"]},{"id":5,"name":"Double Bone-In Pork Chop","ingredients":["Egg","Soy","Sulfites"]},{"id":6,"name":"Fried Mahi Mahi Tacos","ingredients":["Egg","Fish","Milk","Other Gluten","Soy","Wheat"]},{"id":7,"name":"Grilled Mahi Mahi Tacos","ingredients":["Egg","Fish","Milk","Soy","Wheat"]},{"id":8,"name":"Mandarin Orange Glazed Pork Chop with Bacon Jam","ingredients":["Soy","Wheat","Sesame Seeds"]},{"id":9,"name":"New Orleans Jambalaya","ingredients":["Milk","Shellfish","Soy","Sulfites","Wheat"]},{"id":10,"name":"Parmesan Crusted Chicken","ingredients":["Egg","Milk","Other Gluten","Soy","Sulfites","Wheat"]},{"id":11,"name":"Shrimp Tacos","ingredients":["Egg","Milk","Shellfish","Soy","Wheat"]},{"id":12,"name":"Southern Fried Chicken","ingredients":["Milk","Other Gluten","Soy","Sulfites","Wheat","Sesame Seeds"]},{"id":13,"name":"Spicy Peanut Chicken with Soba Noodles","ingredients":["Milk","Peanuts","Soy","Tree Nuts","Wheat","Sesame Seeds"]}]},{"id":21,"name":"Pasta Favorites","items":[{"id":1,"name":"Buffalo Chicken Tender Pasta","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":2,"name":"Chicken Tortilla Pasta","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":3,"name":"Deep Dish Ziti","ingredients":["Egg","Milk","Other Gluten","Wheat"]},{"id":4,"name":"Garlic Breadsticks","ingredients":["Milk","Other Gluten","Wheat"]},{"id":5,"name":"Grilled Chicken Alfredo","ingredients":["Milk","Other Gluten","Soy","Wheat","Sesame Seeds"]},{"id":6,"name":"Jumbo Spaghetti and Meatballs","ingredients":["Egg","Milk","Other Gluten","Wheat"]},{"id":7,"name":"Scampi Pasta","ingredients":["Milk","Other Gluten","Shellfish","Soy","Wheat"]},{"id":8,"name":"Traditional Chicken Parmigiana Pasta","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]}]},{"id":22,"name":"Housemade Soups","items":[{"id":1,"name":"Broccoli Cheddar Soup in a Sourdough Loaf","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":2,"name":"Broccoli Cheddar Soup, Bowl","ingredients":["Milk","Soy"]},{"id":3,"name":"Broccoli Cheddar Soup, Cup","ingredients":["Milk","Soy"]},{"id":4,"name":"Chicken Tortilla Soup in a Sourdough Loaf","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":5,"name":"Chicken Tortilla Soup, Bowl","ingredients":["Milk","Soy","Wheat"]},{"id":6,"name":"Chicken Tortilla Soup, Cup","ingredients":["Milk","Soy","Wheat"]},{"id":7,"name":"Clam Chowder in a Sourdough Loaf","ingredients":["Milk","Other Gluten","Shellfish","Soy","Wheat"]},{"id":8,"name":"Clam Chowder, Bowl","ingredients":["Milk","Other Gluten","Shellfish","Soy","Wheat"]},{"id":9,"name":"Clam Chowder, Cup","ingredients":["Milk","Other Gluten","Shellfish","Soy","Wheat"]},{"id":10,"name":"Piranha Pale Ale Chili in a Sourdough Loaf","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":11,"name":"Piranha Pale Ale Chili, Bowl","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":12,"name":"Piranha Pale Ale Chili, Cup","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":13,"name":"Soup and Salad Combo","ingredients":[]},{"id":14,"name":"with Bowl of Broccoli Cheddar Soup","ingredients":["Milk","Soy"]},{"id":15,"name":"with Bowl of Chicken Tortilla Soup","ingredients":["Milk","Soy","Wheat"]},{"id":16,"name":"with Bowl of Clam Chowder","ingredients":["Milk","Other Gluten","Shellfish","Soy","Wheat"]},{"id":17,"name":"with Bowl of Piranha Pale Ale Chili","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":18,"name":"with Salad Choice Caesar Salad","ingredients":["Egg","Fish","Milk","Other Gluten","Soy","Wheat"]},{"id":19,"name":"with Salad Choice Fresh Mozzarella and Tomato Salad","ingredients":["Milk","Sulfites"]},{"id":20,"name":"with Salad Choice House Salad","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":21,"name":"with Salad Choice Wedge Salad","ingredients":["Egg","Milk","Soy"]},{"id":22,"name":"Sourdough Bread Boule","ingredients":["Milk","Other Gluten","Wheat"]}]},{"id":23,"name":"Desserts","items":[{"id":1,"name":"BJ's Handcrafted Root Beer Float","ingredients":["Egg","Milk","Soy"]},{"id":2,"name":"BJ's Peanut Butter S'mores Pizookie","ingredients":["Egg","Milk","Other Gluten","Peanuts","Soy","Wheat"]},{"id":3,"name":"Black Cherry Soda Float","ingredients":["Egg","Milk","Soy"]},{"id":4,"name":"Chocolate Chunk Pizookie","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":5,"name":"Chocolate Chunk Pizookie Party Platter","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":6,"name":"Cinnamon Roll","ingredients":["Egg","Other Gluten","Soy","Wheat"]},{"id":7,"name":"Cookies 'n' Cream Pizookie","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":8,"name":"Cookies 'n' Cream Pizookie Party Platter","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":9,"name":"Cream Soda Float","ingredients":["Egg","Milk","Soy"]},{"id":10,"name":"Ghirardelli Double Chocolate Chip Ice Cream","ingredients":["Egg","Milk","Soy"]},{"id":11,"name":"Gluten Free Chocolate Chip Pizookie","ingredients":["Egg","Milk","Soy"]},{"id":12,"name":"Mini Chocolate Chunk Pizookie","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":13,"name":"Mini Cookies 'n' Cream Pizookie","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":14,"name":"Mini Hot Fudge Brownie Pizookie","ingredients":["Egg","Milk","Other Gluten","Soy","Tree Nuts","Wheat"]},{"id":15,"name":"Mini Salted Caramel Pizookie","ingredients":["Egg","Milk","Other Gluten","Soy","Tree Nuts","Wheat"]},{"id":16,"name":"Mini Strawberry Shortcake Pizookie","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":17,"name":"Mini Sugar Cookie Pizookie","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":18,"name":"Mini Triple Chocolate Pizookie","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":19,"name":"Mini White Chocolate Pizookie","ingredients":["Egg","Milk","Soy","Tree Nuts","Wheat"]},{"id":20,"name":"Orange Cream Soda Float","ingredients":["Egg","Milk","Soy"]},{"id":21,"name":"Party Pizookie","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":22,"name":"Peanut Butter Pizookie ","ingredients":["Egg","Milk","Peanuts","Soy","Wheat"]},{"id":23,"name":"Peanut Butter Pizookie Party Platter","ingredients":["Egg","Milk","Peanuts","Soy","Wheat"]},{"id":24,"name":"Pizookie Hot Fudge Brownie","ingredients":["Egg","Milk","Other Gluten","Soy","Tree Nuts","Wheat"]},{"id":25,"name":"Pizookie Trio","ingredients":["Egg","Milk","Other Gluten","Soy","Tree Nuts","Wheat"]},{"id":26,"name":"Salted Caramel Pizookie","ingredients":["Egg","Milk","Other Gluten","Soy","Tree Nuts","Wheat"]},{"id":27,"name":"Salted Caramel Pizookie Platter","ingredients":["Egg","Milk","Other Gluten","Soy","Tree Nuts","Wheat"]},{"id":28,"name":"Spooky Pizookie","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":29,"name":"Strawberry Shortcake Pizookie","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":30,"name":"Sugar Cookie Pizookie","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":31,"name":"Sugar Cookie Pizookie Party Platter","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":32,"name":"Triple Chocolate Pizookie Made With Ghirardelli","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":33,"name":"Triple Chocolate Pizookie Made With Ghirardelli Party Platter","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":34,"name":"Vanilla Bean Ice Cream","ingredients":["Egg","Milk","Soy"]},{"id":35,"name":"Vanilla Cream Float","ingredients":["Egg","Milk","Soy"]},{"id":36,"name":"White Chocolate Macadamia Nut Pizookie","ingredients":["Egg","Milk","Soy","Tree Nuts","Wheat"]},{"id":37,"name":"White Chocolate Pizookie Party Platter","ingredients":["Egg","Milk","Soy","Tree Nuts","Wheat"]}]},{"id":24,"name":"BJs Handcrafted Draft Sodas","items":[{"id":1,"name":"Black Cherry Soda","ingredients":[]},{"id":2,"name":"Orange Cream Soda","ingredients":[]},{"id":3,"name":"Root Beer","ingredients":[]},{"id":4,"name":"Vanilla Cream Soda","ingredients":[]}]},{"id":25,"name":"Beverages","items":[{"id":1,"name":"Aquafina Bottled Water","ingredients":[]},{"id":2,"name":"BJ's Fresh Squeezed Lemonade","ingredients":[]},{"id":3,"name":"with Sugar Rim","ingredients":[]},{"id":4,"name":"Boba-licious Mango Sparkler","ingredients":[]},{"id":5,"name":"Brisk Raspberry Iced Tea","ingredients":[]},{"id":6,"name":"Chocolate Milk","ingredients":["Milk"]},{"id":7,"name":"Club Soda","ingredients":[]},{"id":8,"name":"Coffee","ingredients":[]},{"id":9,"name":"Decaf Coffee","ingredients":[]},{"id":10,"name":"Diet Dr Pepper","ingredients":[]},{"id":11,"name":"Diet Pepsi","ingredients":[]},{"id":12,"name":"Dr Pepper","ingredients":[]},{"id":13,"name":"Frozen Strawberry Limeade","ingredients":[]},{"id":14,"name":"Ginger Beer","ingredients":[]},{"id":15,"name":"Gosling's Ginger Beer","ingredients":[]},{"id":16,"name":"Hot Chocolate","ingredients":["Milk"]},{"id":17,"name":"Hot Tea","ingredients":[]},{"id":18,"name":"Milk","ingredients":["Milk"]},{"id":19,"name":"Mountain Dew","ingredients":[]},{"id":20,"name":"Pepsi","ingredients":[]},{"id":21,"name":"Pineapple Juice","ingredients":[]},{"id":22,"name":"Razzle Dazzle Berry Fizz","ingredients":[]},{"id":23,"name":"Regular Freshly Brewed Iced Tea","ingredients":[]},{"id":24,"name":"Roy Rogers","ingredients":[]},{"id":25,"name":"Shirley Temple","ingredients":[]},{"id":26,"name":"Strawberry Dream","ingredients":["Tree Nuts"]},{"id":27,"name":"Strawberry Lemonade","ingredients":[]},{"id":28,"name":"Sweet Tea","ingredients":[]},{"id":29,"name":"Blue Raspberry Candy Crush","ingredients":["Milk"]},{"id":30,"name":"Sunrise in the Tropics","ingredients":[]},{"id":31,"name":"Caribbean Mai Tai","ingredients":[]}]},{"id":26,"name":"BJ's Signature Handcrafted Beers","items":[{"id":1,"name":"BJ's Berry Burst Cider ","ingredients":[]},{"id":2,"name":"BJ's Brewhouse Blonde ","ingredients":["Wheat"]},{"id":3,"name":"BJ's Committed Double IPA","ingredients":[]},{"id":4,"name":"BJ's Enchantress Golden Pilsner","ingredients":[]},{"id":5,"name":"BJ's HopStorm IPA  ","ingredients":["Wheat"]},{"id":6,"name":"BJ's Nutty Brewnette ","ingredients":[]},{"id":7,"name":"BJ's Oasis Amber  ","ingredients":[]},{"id":8,"name":"BJ's PM Porter   ","ingredients":[]},{"id":9,"name":"BJ's Tatonka Stout  ","ingredients":[]},{"id":10,"name":"BJ's Harvest Hefeweizen ","ingredients":["Wheat"]},{"id":11,"name":"BJ's Jeremiah Red ","ingredients":[]},{"id":12,"name":"BJ's LightSwitch Lager  ","ingredients":["Wheat"]},{"id":13,"name":"BJ's Piranha Pale Ale  ","ingredients":["Wheat"]}]},{"id":27,"name":"Alcoholic Beverages","items":[{"id":1,"name":"Alabama Sunset","ingredients":[]},{"id":2,"name":"Alabama Sunset, Take Out","ingredients":[]},{"id":3,"name":"Aperol Spritz","ingredients":[]},{"id":4,"name":"BJ's Brewhouse Margarita","ingredients":[]},{"id":5,"name":"Bulleit Old Fashioned","ingredients":["Wheat"]},{"id":6,"name":"Casamigos Blackberry Margarita","ingredients":[]},{"id":7,"name":"Classic Mojito","ingredients":[]},{"id":8,"name":"Classic Bloody Mary","ingredients":["Fish","Soy"]},{"id":9,"name":"Cosmopolitan","ingredients":[]},{"id":10,"name":"Fresh Strawberry Margarita","ingredients":[]},{"id":11,"name":"Fresh Strawberry Margarita, Take Out","ingredients":[]},{"id":12,"name":"Frose","ingredients":["Sulfites"]},{"id":13,"name":"Frosty Peach","ingredients":[]},{"id":14,"name":"Grand Patron Margarita","ingredients":[]},{"id":15,"name":"Grand Patron Margarita, Take Out","ingredients":[]},{"id":16,"name":"Handcrafted Margarita","ingredients":[]},{"id":17,"name":"Handcrafted Margarita, Take Out","ingredients":[]},{"id":18,"name":"Irish Coffee","ingredients":[]},{"id":19,"name":"Lemon Drop","ingredients":[]},{"id":20,"name":"Margarita Flight","ingredients":[]},{"id":21,"name":"Pina Colada","ingredients":["Tree Nuts"]},{"id":22,"name":"Pink Cadillac","ingredients":[]},{"id":23,"name":"Sparkling Sangria","ingredients":["Sulfites"]},{"id":24,"name":"Sparkling Sangria, Take Out","ingredients":["Sulfites"]},{"id":25,"name":"Spicy Bloody Mary","ingredients":["Fish","Soy"]},{"id":26,"name":"Strawberry Mojito","ingredients":[]},{"id":27,"name":"Tito's American Mule","ingredients":[]},{"id":28,"name":"Tito's Lavender Lemonade","ingredients":[]},{"id":29,"name":"Tito's Strawberry Lemonade","ingredients":[]},{"id":30,"name":"Tito's Strawberry Lemonade, Take Out","ingredients":[]},{"id":31,"name":"Tito's Strawberry Mule","ingredients":[]},{"id":32,"name":"Ultimate Long Island","ingredients":[]},{"id":33,"name":"White Peach Boba-rita","ingredients":[]},{"id":34,"name":"White Peach Boba-rita, Take Out","ingredients":[]}]},{"id":28,"name":"Lunch Specials","items":[{"id":1,"name":"BJ's Classic Mini One Topping Pizza and House Salad","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":2,"name":"with Anchovies","ingredients":["Fish","Milk","Other Gluten","Soy","Wheat"]},{"id":3,"name":"with Bacon","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":4,"name":"with Black Olives","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":5,"name":"with Blackened Chicken","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":6,"name":"with Fresh Basil","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":7,"name":"with Fresh Cilantro","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":8,"name":"with Garlic","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":9,"name":"with Green Peppers","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":10,"name":"with Grilled Chicken","ingredients":["Milk","Other Gluten","Soy","Wheat","Sesame Seeds"]},{"id":11,"name":"with Ham","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":12,"name":"with Jalapenos","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":13,"name":"with Meatballs","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":14,"name":"with Mushrooms","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":15,"name":"with Onions","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":16,"name":"with Pepperoni","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":17,"name":"with Pineapple","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":18,"name":"with Roasted Red Peppers","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":19,"name":"with Sausage","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":20,"name":"Chicken Bacon Ranch Piadina","ingredients":["Egg","Milk","Soy","Wheat","Sesame Seeds"]},{"id":21,"name":"Chicken Tenders","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":22,"name":"Grilled Chicken Alfredo, Lunch","ingredients":["Milk","Other Gluten","Soy","Wheat","Sesame Seeds"]},{"id":23,"name":"Jumbo Spaghetti and Meatballs, Lunch","ingredients":["Egg","Milk","Other Gluten","Wheat"]},{"id":24,"name":"Mediterranean Chicken Bowl with Quinoa and Brown Rice Blend, Lunch","ingredients":["Milk","Soy","Sulfites","Sesame Seeds"]},{"id":25,"name":"Mediterranean Chicken Bowl with Quinoa and White Rice Blend, Lunch","ingredients":["Milk","Soy","Sulfites","Sesame Seeds"]},{"id":26,"name":"Southern Fried Chicken","ingredients":["Milk","Other Gluten","Soy","Sulfites","Wheat","Sesame Seeds"]},{"id":27,"name":"The Classic Baked Potato","ingredients":["Milk","Soy"]},{"id":28,"name":"Unlimited Soup and Salad","ingredients":[]},{"id":29,"name":"with Bowl of Broccoli Cheddar Soup","ingredients":["Milk","Soy"]},{"id":30,"name":"with Bowl of Chicken Noodle Soup","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":31,"name":"with Bowl of Chicken Tortilla Soup","ingredients":["Milk","Soy","Wheat"]},{"id":32,"name":"with Bowl of Clam Chowder","ingredients":["Milk","Other Gluten","Shellfish","Soy","Wheat"]},{"id":33,"name":"with Bowl of Minestrone Soup","ingredients":["Milk","Soy","Wheat"]},{"id":34,"name":"with Bowl of Piranha Pale Ale Chili","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":35,"name":"with Bowl of Tuscan Tomato Bisque","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":36,"name":"with Salad Choice Caesar Salad","ingredients":["Egg","Fish","Milk","Other Gluten","Soy","Wheat"]},{"id":37,"name":"with Salad Choice Fresh Mozzarella and Tomato Salad","ingredients":["Milk","Sulfites"]},{"id":38,"name":"with Salad Choice House Salad","ingredients":["Milk","Other Gluten","Soy","Wheat"]}]},{"id":29,"name":"Entrees","items":[{"id":1,"name":"Tri Tip Combo with Chicken","ingredients":["Other Gluten","Soy","Wheat","Sesame Seeds"]},{"id":2,"name":"Tri Tip Combo with Ribs","ingredients":["Other Gluten","Soy","Wheat"]},{"id":3,"name":"Tri Tip Combo with Shrimp","ingredients":["Milk","Other Gluten","Shellfish","Soy","Wheat"]}]},{"id":30,"name":"Kids Menu Items","items":[{"id":1,"name":"Kids 1 Per Cent Milk","ingredients":["Milk"]},{"id":2,"name":"Kids 2 Per Cent Milk","ingredients":["Milk"]},{"id":3,"name":"Kids Apple Juice","ingredients":[]},{"id":4,"name":"Kids BJ's Handcrafted Root Beer","ingredients":[]},{"id":5,"name":"Kids Boneless Chicken Wings with BJ's Peppered BBQ Sauce","ingredients":["Egg","Milk","Wheat"]},{"id":6,"name":"Kids Boneless Chicken Wings with Root Beer BBQ Sauce","ingredients":["Egg","Milk","Sulfites","Wheat"]},{"id":7,"name":"Kids Broccoli","ingredients":[]},{"id":8,"name":"Kids Brownie Pizookie","ingredients":["Egg","Milk","Other Gluten","Soy","Tree Nuts","Wheat"]},{"id":9,"name":"Kids Cheese Pizza","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":10,"name":"Kids Chicken Tenders","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":11,"name":"Kids Chocolate Chunk Pizookie","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":12,"name":"Kids Chocolate Milk","ingredients":["Milk"]},{"id":13,"name":"Kids Cookies and Creme Pizookie","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":14,"name":"Kids Cranberry Juice","ingredients":[]},{"id":15,"name":"Kids Diet Dr Pepper","ingredients":[]},{"id":16,"name":"Kids Diet Pepsi","ingredients":[]},{"id":17,"name":"Kids Dr Pepper","ingredients":[]},{"id":18,"name":"Kids Fries","ingredients":["Wheat"]},{"id":19,"name":"Kids Fruit Cup","ingredients":[]},{"id":20,"name":"Kids Gluten Free Chocolate Chip Pizookie","ingredients":["Egg","Milk","Soy"]},{"id":21,"name":"Kids Grilled Chicken Breast Meal","ingredients":["Soy","Sesame Seeds"]},{"id":22,"name":"Kids Happy Face Potatoes","ingredients":["Wheat"]},{"id":23,"name":"Kids Lemonade","ingredients":[]},{"id":24,"name":"Kids Mac and Cheese","ingredients":["Milk","Wheat"]},{"id":25,"name":"Kids Mashed Potatoes","ingredients":["Milk","Soy"]},{"id":26,"name":"Kids Mini Burgers","ingredients":["Milk","Other Gluten","Wheat"]},{"id":27,"name":"Kids Mini Corn Dogs","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":28,"name":"Kids Mountain Dew","ingredients":[]},{"id":29,"name":"Kids Orange Juice","ingredients":[]},{"id":30,"name":"Kids Pasta, Add Chicken","ingredients":["Soy","Sesame Seeds"]},{"id":31,"name":"Kids Pasta, Add Meatball","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":32,"name":"Kids Pasta, Alfredo Sauce","ingredients":["Milk","Other Gluten","Wheat"]},{"id":33,"name":"Kids Pasta, Butter and Parmesan Sauce","ingredients":["Milk"]},{"id":34,"name":"Kids Pasta, Fettuiccini","ingredients":["Wheat"]},{"id":35,"name":"Kids Pasta, Marinara Sauce","ingredients":[]},{"id":36,"name":"Kids Pasta, Penne","ingredients":["Wheat"]},{"id":37,"name":"Kids Pasta, Spaghetti","ingredients":["Wheat"]},{"id":38,"name":"Kids Pepperoni Pizza","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":39,"name":"Kids Pepsi","ingredients":[]},{"id":40,"name":"Kids Rice Pilaf","ingredients":["Soy","Wheat"]},{"id":41,"name":"Kids Salted Caramel Pizookie","ingredients":["Egg","Milk","Other Gluten","Soy","Tree Nuts","Wheat"]},{"id":42,"name":"Kids Side Salad","ingredients":["Egg","Milk","Wheat"]},{"id":43,"name":"Kids Spaghetti with Marinara","ingredients":["Wheat"]},{"id":44,"name":"Kids Spaghetti with Meat Sauce","ingredients":["Milk","Sulfites","Wheat"]},{"id":45,"name":"Kids Starter","ingredients":["Other Gluten","Soy","Wheat"]},{"id":46,"name":"Kids Steamed Veggies","ingredients":["Soy"]},{"id":47,"name":"Kids Strawberry Shortcake Pizookie","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":48,"name":"Kids Sugar Cookie Pizookie","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":49,"name":"Kids Sundae","ingredients":["Egg","Milk","Soy"]},{"id":50,"name":"Kids Sweet Potato Fries","ingredients":["Wheat"]},{"id":51,"name":"Kids Triple Chocolate Pizookie","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":52,"name":"Kids Veggies and Dip","ingredients":["Egg","Milk"]},{"id":53,"name":"Kids White Chocolate Macadamia Nut Pizookie","ingredients":["Egg","Milk","Soy","Tree Nuts","Wheat"]}]},{"id":31,"name":"Brunch Beverages","items":[{"id":1,"name":"Apple Juice","ingredients":[]},{"id":2,"name":"Coffee","ingredients":[]},{"id":3,"name":"Cranberry Juice","ingredients":[]},{"id":4,"name":"Grapefruit Juice","ingredients":[]},{"id":5,"name":"Orange Juice","ingredients":[]}]},{"id":32,"name":"Catering Appetizers","items":[{"id":1,"name":"Boneless Chicken Wings Platter, Catering","ingredients":["Egg","Milk","Wheat"]},{"id":2,"name":"with Wing Sauce Choice BBQ Bacon Jam","ingredients":["Egg","Milk","Soy","Wheat","Sesame Seeds"]},{"id":3,"name":"with Wing Sauce Choice Buffalo Beer Sauce","ingredients":["Egg","Milk","Other Gluten","Wheat"]},{"id":4,"name":"with Wing Sauce Choice Carolina Tangy Gold","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":5,"name":"with Wing Sauce Choice Nashville Hot Sauce","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":6,"name":"with Wing Sauce Choice Peppered BBQ","ingredients":["Egg","Milk","Wheat"]},{"id":7,"name":"with Wing Sauce Choice Root Beer BBQ","ingredients":["Egg","Milk","Sulfites","Wheat"]},{"id":8,"name":"with Wing Seasoning Choice Lemon Pepper Sesame Dry Rub","ingredients":["Egg","Milk","Wheat","Sesame Seeds"]},{"id":9,"name":"Chicken Tenders Platter, Catering","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":10,"name":"Chips with Guacamole and Salsa, Catering","ingredients":["Wheat"]},{"id":11,"name":"Garlic Breadsticks with Marinara Sauce, Catering","ingredients":["Milk","Other Gluten","Wheat"]},{"id":12,"name":"Mozzarella Sticks Platter, Catering","ingredients":["Egg","Milk","Wheat"]},{"id":13,"name":"Peppered BBQ Tri Tip Sliders, Catering","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":14,"name":"Potato Chips, Catering","ingredients":["Wheat"]},{"id":15,"name":"Sliders, Catering","ingredients":["Milk","Other Gluten","Wheat"]},{"id":16,"name":"Slow Roasted Chicken Wings Platter, Catering","ingredients":["Egg","Milk","Other Gluten","Wheat"]},{"id":17,"name":"Spinach and Artichoke Dip Platter, Catering","ingredients":["Milk","Wheat"]}]},{"id":33,"name":"Catering Salads","items":[{"id":1,"name":"Add Avocado, Catering","ingredients":[]},{"id":2,"name":"Add Chicken, Catering","ingredients":["Soy","Sesame Seeds"]},{"id":3,"name":"Add Salmon, Catering","ingredients":["Fish","Soy"]},{"id":4,"name":"Add Shrimp, Catering","ingredients":["Shellfish","Soy"]},{"id":5,"name":"Add Tri Tip, Catering","ingredients":["Other Gluten","Soy","Wheat"]},{"id":6,"name":"Asian Chopped Salad, Catering","ingredients":["Egg","Soy","Wheat","Sesame Seeds"]},{"id":7,"name":"Caesar Salad, Catering","ingredients":["Egg","Fish","Milk","Other Gluten","Soy","Wheat"]},{"id":8,"name":"Caesar Salad, Family Feast","ingredients":["Egg","Fish","Milk","Other Gluten","Soy","Wheat"]},{"id":9,"name":"Fresh Mozzarella and Tomato Salad, Catering","ingredients":["Milk","Sulfites"]},{"id":10,"name":"House Salad, Catering","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":11,"name":"House Salad, Family Feast","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":12,"name":"Santa Fe Salad, Catering","ingredients":["Egg","Milk","Wheat"]}]},{"id":34,"name":"Catering Entrees","items":[{"id":1,"name":"Asian Chopped Salad Boxed Meal","ingredients":["Egg","Milk","Soy","Wheat","Sesame Seeds"]},{"id":2,"name":"BJ's Brewhouse Bowl with Quinoa and Brown Rice Blend, Catering","ingredients":["Milk","Soy","Sulfites"]},{"id":3,"name":"with Grilled Desert Gold Chicken","ingredients":["Milk","Soy","Sulfites","Sesame Seeds"]},{"id":4,"name":"with Grilled Salmon","ingredients":["Fish","Milk","Soy","Sulfites"]},{"id":5,"name":"with Grilled Shrimp","ingredients":["Milk","Shellfish","Soy","Sulfites","Sesame Seeds"]},{"id":6,"name":"with Roasted Tri Tip Beef","ingredients":["Milk","Other Gluten","Soy","Sulfites","Wheat"]},{"id":7,"name":"BJ's Brewhouse Bowl with Quinoa and White Rice Blend, Catering","ingredients":["Milk","Soy","Sulfites","Sesame Seeds"]},{"id":8,"name":"with Grilled Desert Gold Chicken","ingredients":["Milk","Soy","Sulfites","Sesame Seeds"]},{"id":9,"name":"with Grilled Salmon","ingredients":["Fish","Milk","Soy","Sulfites","Sesame Seeds"]},{"id":10,"name":"with Grilled Shrimp","ingredients":["Milk","Shellfish","Soy","Sulfites","Sesame Seeds"]},{"id":11,"name":"with Roasted Tri Tip Beef","ingredients":["Milk","Other Gluten","Soy","Sulfites","Wheat","Sesame Seeds"]},{"id":12,"name":"Baby Back Ribs, Catering","ingredients":["Soy","Wheat"]},{"id":13,"name":"Cherry Chipotle Glazed Salmon, Catering","ingredients":["Fish","Soy","Wheat"]},{"id":14,"name":"Chicken and Salmon, Family Meal Deal Bundle","ingredients":["Fish","Milk","Soy","Sulfites","Wheat","Sesame Seeds"]},{"id":15,"name":"Fresh Atlantic Salmon, Catering","ingredients":["Fish","Milk","Soy","Sulfites","Wheat"]},{"id":16,"name":"Grilled Chicken Caesar Salad Boxed Meal","ingredients":["Egg","Fish","Milk","Other Gluten","Soy","Wheat","Sesame Seeds"]},{"id":17,"name":"New Orleans Jambalaya, Catering","ingredients":["Milk","Shellfish","Soy","Sulfites","Wheat"]},{"id":18,"name":"Parmesan Chicken and Ribs, Family Meal Deal Bundle","ingredients":["Egg","Milk","Other Gluten","Soy","Sulfites","Wheat"]},{"id":19,"name":"Parmesan Crusted Chicken, Catering","ingredients":["Egg","Milk","Other Gluten","Soy","Sulfites","Wheat"]},{"id":20,"name":"Sal's Brewhouse Chicken","ingredients":["Milk","Soy","Sulfites","Wheat"]},{"id":21,"name":"Santa Fe Salad Boxed Meal","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":22,"name":"Spicy Peanut Soba Noodles, Catering","ingredients":["Milk","Peanuts","Soy","Tree Nuts","Wheat","Sesame Seeds"]},{"id":23,"name":"Steak and Ribs, Family Meal Deal Bundle","ingredients":["Soy","Wheat"]},{"id":24,"name":"Tri Tip Entree, Catering","ingredients":["Other Gluten","Soy","Wheat"]},{"id":25,"name":"Tri Tip and Chicken Combo, Family Meal Deal Bundle","ingredients":["Other Gluten","Soy","Wheat","Sesame Seeds"]},{"id":26,"name":"Tri Tip and Ribs Combo, Family Meal Deal Bundle","ingredients":["Other Gluten","Soy","Wheat"]}]},{"id":35,"name":"Catering Pastas","items":[{"id":1,"name":"Baked Ziti Pasta, Catering","ingredients":["Egg","Milk","Other Gluten","Wheat"]},{"id":2,"name":"Grilled Chicken Alfredo, Catering","ingredients":["Milk","Other Gluten","Soy","Wheat","Sesame Seeds"]},{"id":3,"name":"Jumbo Spaghetti and Meatballs, Catering","ingredients":["Egg","Milk","Other Gluten","Wheat"]},{"id":4,"name":"Shrimp Scampi Pasta, Catering","ingredients":["Milk","Other Gluten","Shellfish","Soy","Wheat"]}]},{"id":36,"name":"Catering Sandwiches","items":[{"id":1,"name":"California Chicken Club Sliders","ingredients":["Egg","Milk","Other Gluten","Wheat"]},{"id":2,"name":"California Veggie Sandwich","ingredients":["Egg","Milk","Other Gluten","Wheat"]},{"id":3,"name":"California Veggie Sandwich Boxed Lunch","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":4,"name":"Greek Veggie Sliders","ingredients":["Egg","Milk","Other Gluten","Sulfites","Wheat"]},{"id":5,"name":"Italian Hoagie, Catering","ingredients":["Egg","Milk","Other Gluten","Sulfites","Wheat"]},{"id":6,"name":"Italian Roast Beef Sliders","ingredients":["Egg","Milk","Other Gluten","Soy","Sulfites","Wheat"]},{"id":7,"name":"Italian Sandwich Boxed Lunch","ingredients":["Egg","Milk","Other Gluten","Soy","Sulfites","Wheat"]},{"id":8,"name":"Mediterranean Chicken Hoagie, Catering","ingredients":["Milk","Other Gluten","Soy","Sulfites","Wheat","Sesame Seeds"]},{"id":9,"name":"Mediterranean Chicken Sandwich Boxed Lunch","ingredients":["Egg","Milk","Other Gluten","Soy","Sulfites","Wheat","Sesame Seeds"]},{"id":10,"name":"Mini California Chicken Club Sandwiches","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat","Sesame Seeds"]},{"id":11,"name":"Mini Greek Veggie Sandwiches","ingredients":["Egg","Milk","Other Gluten","Sulfites","Wheat"]},{"id":12,"name":"Mini Italian Roast Beef Sandwiches","ingredients":["Egg","Milk","Other Gluten","Soy","Sulfites","Wheat"]},{"id":13,"name":"Mini Smoked Ham and Swiss Sandwiches","ingredients":["Egg","Milk","Other Gluten","Soy","Sulfites","Wheat"]},{"id":14,"name":"Smoked Ham and Swiss Sliders","ingredients":["Egg","Milk","Other Gluten","Soy","Sulfites","Wheat"]}]},{"id":37,"name":"Catering Sides","items":[{"id":1,"name":"Broccoli, Catering","ingredients":[]},{"id":2,"name":"Classic Baked Potatoes, Family Meal Deal","ingredients":["Milk","Soy"]},{"id":3,"name":"Couscous Mac N Cheese, Catering","ingredients":["Milk","Other Gluten","Wheat"]},{"id":4,"name":"Garlic Breadsticks, Catering","ingredients":["Milk","Other Gluten","Wheat"]},{"id":5,"name":"Garlic Roasted Vegetables, Catering","ingredients":["Soy","Sesame Seeds"]},{"id":6,"name":"Mashed Potatoes, Family Meal Deal","ingredients":["Milk","Soy"]},{"id":7,"name":"Rice Pilaf, Catering","ingredients":["Soy","Wheat"]},{"id":8,"name":"Rice Pilaf, Family Meal Deal","ingredients":["Soy","Wheat"]},{"id":9,"name":"Steamed Broccoli, Family Meal Deal","ingredients":[]},{"id":10,"name":"White Cheddar Mashed Potatoes, Catering","ingredients":["Milk","Soy"]}]},{"id":38,"name":"Catering Miscellaneous Items","items":[{"id":1,"name":"Pasta Feast Fettuccini, Catering","ingredients":["Wheat"]},{"id":2,"name":"Pasta Feast Penne, Catering","ingredients":["Wheat"]},{"id":3,"name":"Pasta Feast Spaghetti, Catering","ingredients":["Wheat"]}]},{"id":39,"name":"Catering Desserts","items":[{"id":1,"name":"Chocolate Chunk Cookies, Catering","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":2,"name":"Fresh Fruit, Catering","ingredients":[]},{"id":3,"name":"Fruit Platter, Catering","ingredients":[]},{"id":4,"name":"Mini Chocolate Chunk Pizookie, Catering","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":5,"name":"Pizookie Party, Catering","ingredients":["Egg","Milk","Soy","Wheat"]}]},{"id":40,"name":"Large Party Take Out Items","items":[{"id":1,"name":"Asian Chopped Salad","ingredients":["Egg","Soy","Wheat","Sesame Seeds"]},{"id":2,"name":"Baby Back Ribs","ingredients":["Milk","Soy","Wheat"]},{"id":3,"name":"Baked Ziti Pasta","ingredients":["Egg","Milk","Other Gluten","Wheat"]},{"id":4,"name":"Caesar Salad","ingredients":["Egg","Fish","Milk","Other Gluten","Soy","Wheat"]},{"id":5,"name":"Cherry Chipotle Salmon","ingredients":["Fish","Soy","Wheat"]},{"id":6,"name":"Chocolate Chunk Cookies","ingredients":["Egg","Milk","Soy","Wheat"]},{"id":7,"name":"Fresh Atlantic Salmon","ingredients":["Fish","Milk","Soy","Sulfites","Wheat"]},{"id":8,"name":"Fresh Mozzarella and Tomato Salad","ingredients":["Milk","Sulfites"]},{"id":9,"name":"Grilled Chicken Alfredo","ingredients":["Milk","Other Gluten","Soy","Wheat","Sesame Seeds"]},{"id":10,"name":"Grilled Chicken Alfredo","ingredients":["Milk","Other Gluten","Soy","Wheat","Sesame Seeds"]},{"id":11,"name":"House Salad","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":12,"name":"with Dressing Choice Balsamic Vinaigrette","ingredients":["Milk","Other Gluten","Soy","Sulfites","Wheat"]},{"id":13,"name":"with Dressing Choice Bleu Cheese","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":14,"name":"with Dressing Choice Honey Mustard","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":15,"name":"with Dressing Choice Italian","ingredients":["Milk","Other Gluten","Soy","Wheat"]},{"id":16,"name":"with Dressing Choice Ranch","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":17,"name":"with Dressing Choice Thousand Island","ingredients":["Egg","Milk","Other Gluten","Soy","Wheat"]},{"id":18,"name":"Jumbo Spaghetti and Meatballs","ingredients":["Egg","Milk","Other Gluten","Wheat"]},{"id":19,"name":"New Orleans Jambalaya","ingredients":["Milk","Shellfish","Soy","Sulfites","Wheat"]},{"id":20,"name":"Parmesan Crusted Chicken","ingredients":["Egg","Milk","Other Gluten","Soy","Sulfites","Wheat"]},{"id":21,"name":"Santa Fe Salad","ingredients":["Egg","Milk","Wheat"]},{"id":22,"name":"Shrimp Scampi Pasta","ingredients":["Milk","Other Gluten","Shellfish","Soy","Wheat"]},{"id":23,"name":"Sliders","ingredients":["Milk","Other Gluten","Wheat"]},{"id":24,"name":"Spicy Peanut Chicken with Soba Noodles","ingredients":["Milk","Peanuts","Soy","Tree Nuts","Wheat","Sesame Seeds"]}]},{"id":41,"name":"Catering Beverages","items":[{"id":1,"name":"BJ's Fresh Squeezed Lemonade, Catering","ingredients":[]},{"id":2,"name":"Black Cherry Soda, Catering","ingredients":[]},{"id":3,"name":"Orange Cream Soda, Catering","ingredients":[]},{"id":4,"name":"Regular Freshly Brewed Iced Tea, Catering","ingredients":[]},{"id":5,"name":"Root Beer, Catering","ingredients":[]},{"id":6,"name":"Strawberry Lemonade, Catering","ingredients":[]},{"id":7,"name":"Vanilla Cream Soda, Catering","ingredients":[]}]}];
+    
+   
+      // DOM Elements
+      const categoryList = document.getElementById('categoryList');
+      const ingredientFilters = document.getElementById('ingredientFilters');
+      const foodList = document.getElementById('foodList');
+      const searchResults = document.getElementById('searchResults');
+      const searchOption = document.querySelector('.search-option');
+      const searchContainer = document.getElementById('searchContainer');
+      const searchInput = document.getElementById('searchInput');
+      const searchButton = document.getElementById('searchButton');
+      const clearFilters = document.getElementById('clearFilter');
+
+
+    
+
+      // State
+      let selectedCategory = null;
+      const selectedIngredients = new Set();
+
+      // Render Functions
+      const renderCategories = () => {
+        categoryList.innerHTML = '';
+
+        // Create and insert the search option as the first item in the category list
+        const searchOptionElement = document.createElement('li');
+        searchOptionElement.className = 'list-group-item-cat search-option';
+        searchOptionElement.textContent = 'Search';
+        searchOptionElement.addEventListener('click', showSearchBox);
+        categoryList.appendChild(searchOptionElement);
+
+        categories.forEach((category) => {
+          const li = document.createElement('li');
+          li.className = `list-group-item-cat ${selectedCategory === category.id ? 'active' : ''}`;
+          li.textContent = category.name;
+          li.addEventListener('click', () => toggleCategory(category.id));
+          categoryList.appendChild(li);
+        });
+      };
+
+      const renderIngredientFilters = () => {
+        ingredientFilters.innerHTML = '';
+       
+      ingredientFilters.appendChild(clearFilters);
+        clearFilters.addEventListener('click', resetFilters);
+
+        const uniqueIngredients = new Set();
+        categories.forEach((category) => {
+          category.items.forEach((item) => {
+            item.ingredients.forEach((ingredient) => uniqueIngredients.add(ingredient));
+          });
+        });
+
+
+
+        uniqueIngredients.forEach((ingredient) => {
+          const button = document.createElement('button');
+          button.className = `btn ${selectedIngredients.has(ingredient) ? 'btn-primary' : 'btn-secondary'}`;
+          button.textContent = ingredient;
+          button.addEventListener('click', () => toggleIngredientFilter(ingredient));
+          ingredientFilters.appendChild(button);
+        });
+
+      
+      };
+
+      const renderFoodList = () => {
+    searchResults.style.display = 'none';
+    foodList.style.display = 'block';
+
+    const filteredCategories = selectedCategory ? categories.filter((category) => category.id === selectedCategory) : categories;
+
+    foodList.innerHTML = '';
+
+    filteredCategories.forEach((category) => {
+        let containsAllergenItems = [];
+        let noAllergenItems = [];
+        
+        category.items.forEach((item) => {
+            if (containsSelectedAllergens(item)) {
+                containsAllergenItems.push(item);
+            } else {
+                noAllergenItems.push(item);
+            }
+        });
+
+        // Combine the two arrays: first items without allergens, then items with allergens
+        const orderedItems = [...noAllergenItems, ...containsAllergenItems];
+
+        orderedItems.forEach((item) => {
+            const listItem = document.createElement('div');
+            listItem.className = 'list-group-item';
+
+            const itemName = document.createElement('strong');
+            itemName.textContent = item.name;
+            listItem.appendChild(itemName);
+
+            const containsAllergens = containsSelectedAllergens(item);
+
+            if (containsAllergens) {
+                const icon = document.createElement('img');
+                icon.src = 'images/NOTOK.png';
+                icon.alt = 'Not OK';
+                icon.classList.add('icon', 'icon-margin');
+                listItem.appendChild(icon);
+            } else {
+                const icon = document.createElement('img');
+                icon.src = 'images/OK.png';
+                icon.alt = 'OK';
+                icon.classList.add('icon', 'icon-margin');
+                listItem.appendChild(icon);
+            }
+
+            listItem.addEventListener('click', () => toggleItem(category.id, item.id));
+
+            const ingredientList = document.createElement('div');
+            ingredientList.className = 'ingredient-list';
+
+            const containsText = document.createElement('span');
+            containsText.textContent = 'Contains: ';
+            ingredientList.appendChild(containsText);
+
+            const ingredientText = document.createElement('span');
+            ingredientText.textContent = item.ingredients.join(', ');
+            ingredientList.appendChild(ingredientText);
+
+            listItem.appendChild(ingredientList);
+
+            if (selectedIngredients.size > 0 && containsAllergens) {
+                listItem.classList.add('text-danger');
+            }
+
+            foodList.appendChild(listItem);
+        });
+    });
+};
+
+const renderFoodListSearch = () => {
+ 
+    foodList.style.display = 'block';
+
+const filteredCategories = selectedCategory ? categories.filter((category) => category.id === selectedCategory) : categories;
+
+foodList.innerHTML = '';
+
+filteredCategories.forEach((category) => {
+    let containsAllergenItems = [];
+    let noAllergenItems = [];
+    
+    category.items.forEach((item) => {
+        if (containsSelectedAllergens(item)) {
+            containsAllergenItems.push(item);
+        } else {
+            noAllergenItems.push(item);
+        }
+    });
+
+    // Combine the two arrays: first items without allergens, then items with allergens
+    const orderedItems = [...noAllergenItems, ...containsAllergenItems];
+
+    orderedItems.forEach((item) => {
+        const listItem = document.createElement('div');
+        listItem.className = 'list-group-item';
+
+        const itemName = document.createElement('strong');
+        itemName.textContent = item.name;
+        listItem.appendChild(itemName);
+
+        const containsAllergens = containsSelectedAllergens(item);
+
+        if (containsAllergens) {
+            const icon = document.createElement('img');
+            icon.src = 'images/NOTOK.png';
+            icon.alt = 'Not OK';
+            icon.classList.add('icon', 'icon-margin');
+            listItem.appendChild(icon);
+        } else {
+            const icon = document.createElement('img');
+            icon.src = 'images/OK.png';
+            icon.alt = 'OK';
+            icon.classList.add('icon', 'icon-margin');
+            listItem.appendChild(icon);
+        }
+
+        listItem.addEventListener('click', () => toggleItem(category.id, item.id));
+
+        const ingredientList = document.createElement('div');
+        ingredientList.className = 'ingredient-list';
+
+        const containsText = document.createElement('span');
+        containsText.textContent = 'Contains: ';
+        ingredientList.appendChild(containsText);
+
+        const ingredientText = document.createElement('span');
+        ingredientText.textContent = item.ingredients.join(', ');
+        ingredientList.appendChild(ingredientText);
+
+        listItem.appendChild(ingredientList);
+
+        if (selectedIngredients.size > 0 && containsAllergens) {
+            listItem.classList.add('text-danger');
+        }
+
+        foodList.appendChild(listItem);
+    });
+});
+};
+
+
+
+      const toggleCategory = (categoryId) => {
+        guide.style.display = 'none';
+        window.scrollTo(0, 0);
+        selectedCategory = selectedCategory === categoryId ? null : categoryId;
+        renderCategories();
+        renderFoodList();
+        searchInput.value = '';
+      };
+
+      const toggleIngredientFilter = (ingredient) => {
+        guide.style.display = 'none';
+  if (selectedIngredients.has(ingredient)) {
+    selectedIngredients.delete(ingredient);
+  } else {
+    selectedIngredients.add(ingredient);
+  }
+  renderIngredientFilters();
+  if (searchResults.style.display === 'block') {
+    renderSearchResults(searchItems(searchInput.value.trim()));
+  } else {
+    renderFoodList();
+  }
+
+  window.scrollTo(0, 0);
+
+};
+
+      const toggleItem = (categoryId, itemId) => {
+        const category = categories.find((category) => category.id === categoryId);
+        const item = category.items.find((item) => item.id === itemId);
+        item.expanded = !item.expanded;
+        renderFoodList();
+      };
+
+      const containsSelectedAllergens = (item) => {
+        for (const allergen of selectedIngredients) {
+          if (item.ingredients.includes(allergen)) {
+            return true;
+          }
+        }
+        return false;
+      };
+
+      // Search Functionality
+      searchOption.addEventListener('click', showSearchBox);
+      searchButton.addEventListener('click', performSearch);
+
+      function performSearch() {
+  const searchTerm = searchInput.value.trim();
+  if (!searchTerm) {
+    return;
+  }
+
+  const searchMatches = searchItems(searchTerm);
+
+  renderSearchResults(searchMatches);
+}
+
+      function searchItems(searchTerm) {
+        const matches = [];
+
+        categories.forEach((category) => {
+          category.items.forEach((item) => {
+            if (item.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+              matches.push(item);
+            }
+          });
+        });
+
+        return matches;
+      }
+
+      function renderSearchResults(searchMatches) {
+        searchResults.innerHTML = '';
+
+        searchMatches.forEach((item) => {
+          const listItem = document.createElement('div');
+          listItem.className = 'list-group-item';
+
+          const itemName = document.createElement('strong');
+          itemName.textContent = item.name;
+
+          const containsAllergens = containsSelectedAllergens(item);
+
+          if (containsAllergens) {
+            const icon = document.createElement('img');
+            icon.src = 'images/NotOK.png';
+            icon.alt = 'Not OK';
+            icon.classList.add('icon','icon-margin');
+            itemName.appendChild(icon);
+          }
+
+          else {
+            const icon = document.createElement('img');
+            icon.src = 'images/OK.png';
+            icon.alt = 'OK';
+            icon.classList.add('icon','icon-margin');
+            itemName.appendChild(icon);
+          }
+
+          listItem.appendChild(itemName);
+
+          const ingredientList = document.createElement('div');
+          ingredientList.className = 'ingredient-list';
+
+          const containsText = document.createElement('span');
+          containsText.textContent = 'Contains: ';
+          ingredientList.appendChild(containsText);
+
+          const ingredientText = document.createElement('span');
+          ingredientText.textContent = item.ingredients.join(', ');
+          ingredientList.appendChild(ingredientText);
+
+          listItem.appendChild(ingredientList);
+
+          if (selectedIngredients.size > 0 && containsAllergens) {
+            listItem.classList.add('text-danger');
+          }
+
+          searchResults.appendChild(listItem);
+        });
+
+        searchResults.style.display = 'block';
+        foodList.style.display = 'none';
+        
+      }
+
+      function resetFilters() {
+        selectedIngredients.clear();
+        renderIngredientFilters();
+        renderFoodList();
+}
+
+      function showSearchBox() {
+        guide.style.display = 'none';
+        foodList.innerHTML = '';
+  selectedCategory = null;
+  renderCategories();
+
+  searchContainer.style.display = 'block';
+  searchInput.value = '';
+  searchInput.focus();
+}
+
+      function hideSearchResults() {
+        searchResults.innerHTML = '';
+        searchResults.style.display = 'none';
+        foodList.style.display = 'block';
+       
+      }
+
+      // Initial Rendering
+      renderCategories();
+      renderIngredientFilters();
+    //  renderFoodList();
+    </script>
+  </body>
+</html>
